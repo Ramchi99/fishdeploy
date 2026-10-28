@@ -31,6 +31,7 @@ modifying them.
 python analysis/build_analysis.py   # detect + render videos (resumable)
 python analysis/build_reach.py      # reachability plots + tables
 python analysis/build_catalog.py    # RUN_CATALOG.md
+python analysis/make_heading_cache.py   # initial heading per reach run (needs the videos from the archive)
 ```
 
 `build_analysis.py` is idempotent: it skips runs whose cache/video already

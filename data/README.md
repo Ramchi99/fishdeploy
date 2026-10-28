@@ -39,7 +39,7 @@ the closed-loop fits use segments of them.
 | `paper_runs.txt` | the 43 run folders of the paper's deployment set, one per line (the figures iterate over this list, not over the folder) | by hand | paper Fig. 9, Fig. 12, the domain figures |
 | `<run>/raw/run_config.json`, `frame_timestamps.csv` | env config, policy hash (`7bbe08b8` in all), clock offset; camera frame times | `deploy_main.py`, `deploy/laptop/vision_streamer.py` | `analysis/build_analysis.py`, the fits |
 | `analysis/cache/<name>.npz`, `cache_redetect/<name>.npz` | tracked fish, anchor and target positions per frame, corrected timeline | `analysis/build_analysis.py`, `redetect_trajectories.py` (from the videos) | paper Fig. 7, Fig. 8 |
-| `analysis/cache_heading/initial_heading.json` | initial heading per reach run | fishsim `paper/tools/make_heading_cache.py` (from the videos) | paper Fig. 8 |
+| `analysis/cache_heading/initial_heading.json` | initial heading per reach run | `analysis/make_heading_cache.py` (from the videos in the archive) | paper Fig. 8 |
 | `analysis/reachability/run_geometry.csv`, `reachability_summary.md` | target radius, angle, outcome, closest approach; the 13/22, 7/8, 20/30 counts | `analysis/build_reach.py` | paper Fig. 8, the report |
 | `analysis/report_strobes/*.png` | strobe composites | `analysis/gen_report_strobes.py` (from the videos) | paper Fig. 1, Fig. 7 |
 | `canonical/<part_id>.csv` | 18 curated segments resampled to 1 kHz: pose, yaw, velocities, motor position and velocity, gyro | `analysis/canonical/convert_segments.py` (from the videos and `run.csv`, following `layer2_parts.yml`) | fishsim `sysid/closed_loop/refit_fluid.py` (the direct-action fluid), `fit_motor.py` (Table "motor") |
