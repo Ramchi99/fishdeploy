@@ -42,7 +42,9 @@ mm = 1 / 25.4
 
 # ─── paths ───────────────────────────────────────────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR   = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "data", "20260401_first_swim"))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..")))   # repository root
+from paths import FIELD  # noqa: E402
+DATA_DIR   = str(FIELD)
 OUT_DIR    = SCRIPT_DIR
 
 # ─── constants ───────────────────────────────────────────────────────────────
@@ -61,15 +63,15 @@ AMP_MARKERS  = {5.0: "o", 6.0: "s", 7.0: "^", 9.0: "D", 12.0: "P"}
 # (folder_name, cmd_freq_hz, nominal_amp_mm, offset_mm, run_type, short_label)
 # nominal_amp_mm is from the --amp argument to unified_test.py (at 12.5mm radius)
 RUNS = [
-    ("run_1_1.0Hz_5.0mm",           1.0,  5.0,  0.0, "straight", "R1\n1Hz/5mm"),
-    ("run_2_2.0Hz_5.0mm",           2.0,  5.0,  0.0, "straight", "R2\n2Hz/5mm"),
-    ("run_3_1.0Hz_9.0mm",           1.0,  9.0,  0.0, "straight", "R3\n1Hz/9mm"),
-    ("run_4_2.0Hz_9.0mm",           2.0,  9.0,  0.0, "straight", "R4\n2Hz/9mm"),
-    ("run_5_1.0Hz_7.0mm",           1.0,  7.0,  0.0, "straight", "R5\n1Hz/7mm"),
-    ("run_6_2.0Hz_7.0mm",           2.0,  7.0,  0.0, "straight", "R6\n2Hz/7mm"),
-    ("run_7_3.0Hz_7.0mm",           3.0,  7.0,  0.0, "straight", "R7\n3Hz/7mm"),
-    ("run_8_2.0Hz_6.0mm_3.0mm",     2.0,  6.0,  3.0, "curve",    "R8\n2Hz/6mm\n+3mm"),
-    ("run_9_2.0Hz_6.0mm_-3.0mm",    2.0,  6.0, -3.0, "curve",    "R9\n2Hz/6mm\n-3mm"),
+    ("run_01_1.0Hz_5.0mm",           1.0,  5.0,  0.0, "straight", "R1\n1Hz/5mm"),
+    ("run_02_2.0Hz_5.0mm",           2.0,  5.0,  0.0, "straight", "R2\n2Hz/5mm"),
+    ("run_03_1.0Hz_9.0mm",           1.0,  9.0,  0.0, "straight", "R3\n1Hz/9mm"),
+    ("run_04_2.0Hz_9.0mm",           2.0,  9.0,  0.0, "straight", "R4\n2Hz/9mm"),
+    ("run_05_1.0Hz_7.0mm",           1.0,  7.0,  0.0, "straight", "R5\n1Hz/7mm"),
+    ("run_06_2.0Hz_7.0mm",           2.0,  7.0,  0.0, "straight", "R6\n2Hz/7mm"),
+    ("run_07_3.0Hz_7.0mm",           3.0,  7.0,  0.0, "straight", "R7\n3Hz/7mm"),
+    ("run_08_2.0Hz_6.0mm_3.0mm",     2.0,  6.0,  3.0, "curve",    "R8\n2Hz/6mm\n+3mm"),
+    ("run_09_2.0Hz_6.0mm_-3.0mm",    2.0,  6.0, -3.0, "curve",    "R9\n2Hz/6mm\n-3mm"),
     ("run_10_4.0Hz_7.0mm",          4.0,  7.0,  0.0, "straight", "R10\n4Hz/7mm"),
     ("run_11_2.0Hz_12.0mm",         2.0, 12.0,  0.0, "straight", "R11\n2Hz/12mm"),
     ("run_12_2.0Hz_12.0mm_p-1600",  2.0, 12.0,  0.0, "straight", "R12\n2Hz/12mm\nP=1600"),

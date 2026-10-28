@@ -16,7 +16,7 @@ Variance comparison reveals which source is more stable.
 
 Usage:
   python3 diag_gravity_check.py <run_dir>
-  python3 diag_gravity_check.py field_test/data/20260401_first_swim/run_3_1.0Hz_9.0mm
+  python3 diag_gravity_check.py data/01_field_openloop_20260401/run_03_1.0Hz_9.0mm
 """
 
 import sys

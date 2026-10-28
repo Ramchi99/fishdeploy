@@ -6,6 +6,8 @@ import sys
 
 # --- BULLETPROOF PATHING ---
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..")))   # repository root
+from paths import TAIL_BENCH  # noqa: E402
 sys.path.append(os.path.abspath(os.path.join(SCRIPT_DIR, '..')))
 sys.path.append(os.path.abspath(os.path.join(SCRIPT_DIR, '../..')))
 
@@ -66,7 +68,7 @@ print(f"Max Tendon Travel: {args.max_tendon_travel} mm")
 print(f"Calculated Absolute Max Theta: {max_ticks_theta} ticks")
 print("This will run a matrix of tests. Please stand by...")
 
-save_dir = os.path.join(SCRIPT_DIR, "data")
+save_dir = str(TAIL_BENCH / args.env)
 os.makedirs(save_dir, exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 

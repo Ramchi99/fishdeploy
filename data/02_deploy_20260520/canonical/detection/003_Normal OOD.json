@@ -1,0 +1,18 @@
+{
+  "run_id": "20260520_155233_hope_didnt_work_3",
+  "alpha": 0.9,
+  "beta": -20.0,
+  "blur": 3,
+  "quad_decimate": 2.0,
+  "score": 1.0,
+  "n_visible": 401,
+  "n_detected": 401,
+  "reused_from": "001_Glide",
+  "n_missed": 0,
+  "n_gaps": 0,
+  "n_isolated": 0,
+  "longest_gap_s": 0.0,
+  "longest_interior_gap_s": 0.0,
+  "kind_counts": {},
+  "gaps": []
+}

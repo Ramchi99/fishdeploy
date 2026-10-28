@@ -4,6 +4,8 @@ from datetime import datetime
 
 # --- PATHING SETUP ---
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(SCRIPT_DIR, "..")))   # repository root
+from paths import DATA  # noqa: E402
 REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 DXL_DIR = os.path.join(REPO_ROOT, 'hardware')
 sys.path.append(REPO_ROOT); sys.path.append(DXL_DIR)
@@ -57,7 +59,7 @@ class SofiUnifiedTest:
         self.args = args
         self.data_log = []
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.data_dir = os.path.join(SCRIPT_DIR, "data"); self.plot_dir = os.path.join(SCRIPT_DIR, "plots")
+        self.data_dir = str(DATA / "field_logs"); self.plot_dir = str(DATA / "field_logs" / "plots")
         os.makedirs(self.data_dir, exist_ok=True); os.makedirs(self.plot_dir, exist_ok=True)
         self.filename = os.path.join(self.data_dir, f"{self.timestamp}_{args.name}.csv")
         self.servo = None; self.sensor = None; self.ups = None; self.motor_enabled = False; self.baseline_euler = [0.0, 0.0, 0.0]

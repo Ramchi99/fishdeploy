@@ -14,8 +14,10 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-CACHE_DIR = os.path.join(_HERE, "cache")
-OUT_DIR = os.path.join(_HERE, "strobe_plots")
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import ANALYSIS  # noqa: E402
+CACHE_DIR = str(ANALYSIS / "cache")
+OUT_DIR = str(ANALYSIS / "strobe_plots")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 CMAP = "plasma_r"    # yellow(start) -> red -> violet -> blue(end), Liam's palette

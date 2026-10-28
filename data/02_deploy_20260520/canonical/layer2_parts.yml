@@ -1,0 +1,137 @@
+- num: 1
+  name: Glide
+  run_id: 20260520_151453_hope_didnt_work_1
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 1.633
+    t_end: 10.533
+    starts_at_rest: false
+- num: 2
+  name: Relief
+  run_id: 20260520_155106_hope_didnt_work_2
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.933
+    t_end: 10.333
+    starts_at_rest: false
+- num: 4
+  name: Glide 2
+  run_id: 20260520_155400_hope_didnt_work_4
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 1.633
+    t_end: 8.467
+    starts_at_rest: false
+- num: 6
+  name: Normal Run
+  run_id: 20260520_162813_hope_didnt_work_6
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.467
+    t_end: 27.267
+    starts_at_rest: true
+- num: 13
+  name: Near Miss Turn Run
+  run_id: 20260520_164933_crazy_run_5
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.533
+    t_end: 17.267
+    starts_at_rest: true
+- num: 14
+  name: Normal Run 3
+  run_id: 20260520_165359_full_success_1
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.567
+    t_end: 11.367
+    starts_at_rest: true
+- num: 15
+  name: Normal Turn Run
+  run_id: 20260520_165628_full_success_2
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.467
+    t_end: 23.967
+    starts_at_rest: true
+  - part: 2
+    t_start: 25.567
+    t_end: 30.733
+    starts_at_rest: false
+- num: 19
+  name: Initial Rotational Velocity
+  run_id: 20260520_173157_insane_run_3
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.533
+    t_end: 23.333
+    starts_at_rest: true
+- num: 25
+  name: Moved Target Mid Run
+  run_id: 20260520_174144_amazing_run_1
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.367
+    t_end: 16.767
+    starts_at_rest: true
+- num: 26
+  name: Circle Run
+  run_id: 20260520_174706_amazing_run_2
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.333
+    t_end: 10.067
+    starts_at_rest: true
+  - part: 2
+    t_start: 10.967
+    t_end: 24.4
+    starts_at_rest: false
+- num: 27
+  name: Figure Eight Attempt
+  run_id: 20260520_175021_amazing_run_3
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.467
+    t_end: 11.6
+    starts_at_rest: true
+  - part: 2
+    t_start: 12.533
+    t_end: 21.3
+    starts_at_rest: false
+- num: 30
+  name: Figure Eight Attempt 3
+  run_id: 20260520_175736_amazing_run_6
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.433
+    t_end: 12.567
+    starts_at_rest: true
+  - part: 2
+    t_start: 13.533
+    t_end: 36.6
+    starts_at_rest: false
+- num: 32
+  name: Figure Eight Attempt 5
+  run_id: 20260520_180234_amazing_run_8
+  source: rl_deploy
+  parts:
+  - part: 1
+    t_start: 0.367
+    t_end: 12.933
+    starts_at_rest: true
+  - part: 2
+    t_start: 14.6
+    t_end: 29
+    starts_at_rest: false

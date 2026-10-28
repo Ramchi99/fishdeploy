@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import DEPLOY, ANALYSIS  # noqa: E402
 _LAPTOP = os.path.abspath(os.path.join(_HERE, "..", "deploy", "laptop"))
 sys.path.insert(0, _LAPTOP)
 from render_trace import viridis_bgr, OUT_W
@@ -16,9 +18,9 @@ def plasma_bgr(frac):
     r, g, b, _ = _PLASMA(float(np.clip(frac, 0.0, 1.0)))
     return (int(b * 255), int(g * 255), int(r * 255))
 
-RUNS_DIR = os.path.abspath(os.path.join(_HERE, "..", "deploy", "runs"))
-CACHE_DIR = os.path.join(_HERE, "cache")
-OUT_DIR = os.path.join(_HERE, "strobe_plots")
+RUNS_DIR = str(DEPLOY)
+CACHE_DIR = str(ANALYSIS / "cache")
+OUT_DIR = str(ANALYSIS / "strobe_plots")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 TRACE_ALPHA = 0.9   # trace opacity (higher = pops more; full opacity ~1.0)

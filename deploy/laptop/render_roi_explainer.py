@@ -26,7 +26,7 @@ identical timing backbone to render_run.py.
 
 Usage:
     python deploy/laptop/render_roi_explainer.py \
-        --session deploy/runs/20260520_192737_figure_eight_5/raw \
+        --session data/deploy_runs/20260520_192737_figure_eight_5/raw \
         --env-config deploy/configs/cpg_24d.json \
         --start 3.5 --end 13.0
 """

@@ -3,10 +3,10 @@
 Master post-run analysis script for RL deployment runs.
 
 Usage:
-    python deploy/laptop/post_run.py deploy/runs/20260508_143022_pool_test_1
-    python deploy/laptop/post_run.py deploy/runs/20260508_143022_pool_test_1 --render
-    python deploy/laptop/post_run.py deploy/runs/20260508_143022_pool_test_1 --no-noise
-    python deploy/laptop/post_run.py deploy/runs/20260508_143022_pool_test_1 --all
+    python deploy/laptop/post_run.py data/deploy_runs/20260508_143022_pool_test_1
+    python deploy/laptop/post_run.py data/deploy_runs/20260508_143022_pool_test_1 --render
+    python deploy/laptop/post_run.py data/deploy_runs/20260508_143022_pool_test_1 --no-noise
+    python deploy/laptop/post_run.py data/deploy_runs/20260508_143022_pool_test_1 --all
 """
 import argparse
 import json
@@ -280,7 +280,7 @@ def run_analysis(run_dir: str, render: bool = False, no_noise: bool = False) -> 
 
 def main():
     parser = argparse.ArgumentParser(description="Post-run analysis for RL deployment runs")
-    parser.add_argument("run_dir", help="Path to run directory (deploy/runs/YYYYMMDD_name)")
+    parser.add_argument("run_dir", help="Path to run directory (data/deploy_runs/YYYYMMDD_name)")
     parser.add_argument("--render", action="store_true", help="Generate replay.mp4 (~2 min)")
     parser.add_argument("--no-noise", action="store_true", help="Skip noise_config/report generation")
     parser.add_argument("--all", action="store_true", help="All outputs including render")

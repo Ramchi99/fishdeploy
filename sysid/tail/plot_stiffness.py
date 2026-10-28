@@ -3,6 +3,8 @@ import csv
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import TAIL_BENCH  # noqa: E402
 
 plt.rcParams.update({
     "text.usetex": True,
@@ -22,8 +24,8 @@ def main():
 
     file_path = args.file
     if not os.path.exists(file_path):
-        if os.path.exists(os.path.join('data', file_path)):
-            file_path = os.path.join('data', file_path)
+        if os.path.exists(os.path.join(str(TAIL_BENCH / 'stiffness'), file_path)):
+            file_path = os.path.join(str(TAIL_BENCH / 'stiffness'), file_path)
         else:
             print(f"Error: File '{file_path}' not found.")
             return

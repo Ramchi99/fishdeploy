@@ -6,6 +6,8 @@ import sys
 import glob
 from scipy.signal import savgol_filter
 from scipy.interpolate import interp1d, CubicSpline
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import DATA  # noqa: E402
 
 # --- PLOTTING STYLE (from test_freq.py) ---
 plt.rcParams.update({"font.size": 7})
@@ -262,13 +264,13 @@ def plot_field_test(run_dir, show_removed=True):
     print(f"  - Plots saved to {proc_dir}")
 
 def main():
-    base_data_path = "field_test/data"
+    base_data_path = str(DATA)
     
     # 1. Select Session (Day)
-    sessions = sorted([d for d in os.listdir(base_data_path) if os.path.isdir(os.path.join(base_data_path, d)) and d not in ['old', 'apriltag_recording']])
+    sessions = sorted([d for d in os.listdir(base_data_path) if glob.glob(os.path.join(base_data_path, d, "run_*", "raw")) and d not in ['old', 'apriltag_recording']])
     
     if not sessions:
-        print("No session folders found in field_test/data/")
+        print("No session folders (data/<session>/run_*/raw) found in data/")
         return
 
     print("\nAvailable Sessions:")

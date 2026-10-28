@@ -26,10 +26,12 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import ANALYSIS  # noqa: E402
 sys.path.insert(0, _HERE)
 import build_analysis as B
 
-REACH = os.path.join(_HERE, "reachability")
+REACH = str(ANALYSIS / "reachability")
 os.makedirs(REACH, exist_ok=True)
 
 RMAX = 3.0    # fixed plot radius (m) for every plot

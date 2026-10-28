@@ -10,6 +10,8 @@ import sys
 import tempfile
 from dt_apriltags import Detector
 from scipy.spatial.transform import Rotation as R
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import DATA  # noqa: E402
 
 # Config path
 CONFIG_FILE = "field_test/vision_settings.json"
@@ -208,8 +210,8 @@ if __name__ == "__main__":
     if args.run_dir and os.path.isdir(args.run_dir):
         process_swimming(args.run_dir, camera=args.camera); sys.exit(0)
 
-    base_data = "field_test/data"
-    sessions = sorted([d for d in os.listdir(base_data) if os.path.isdir(os.path.join(base_data, d)) and d not in ['old', 'apriltag_recording']])
+    base_data = str(DATA)
+    sessions = sorted([d for d in os.listdir(base_data) if glob.glob(os.path.join(base_data, d, "run_*", "raw")) and d not in ['old', 'apriltag_recording']])
     print("\nAvailable Sessions:"); [print(f"  [{i+1}] {s}") for i, s in enumerate(sessions)]
     s_choice = input("\nSelect Session Number: ").strip()
     try:

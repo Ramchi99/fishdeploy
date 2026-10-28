@@ -6,6 +6,8 @@ import sys
 
 # --- BULLETPROOF PATHING ---
 __script_dir = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(__script_dir, "..", "..")))   # repository root
+from paths import IMU_NOISE  # noqa: E402
 __repo_root = os.path.abspath(os.path.join(__script_dir, '../..'))
 __dxl_dir = os.path.join(__repo_root, 'hardware')
 if __repo_root not in sys.path: sys.path.insert(0, __repo_root)
@@ -132,7 +134,7 @@ def main():
     closePortObject()
 
     # --- 5. SAVING DATA ---
-    save_dir = os.path.join(__script_dir, "data")
+    save_dir = str(IMU_NOISE)
     os.makedirs(save_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     

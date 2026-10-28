@@ -37,8 +37,10 @@ from report_style import use_report_style, savefig, COLLAGE_LW
 use_report_style(collage=True)
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-CACHE_DIR = os.path.join(_HERE, "cache")
-REDET_DIR = os.path.join(_HERE, "cache_redetect")
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import ANALYSIS  # noqa: E402
+CACHE_DIR = str(ANALYSIS / "cache")
+REDET_DIR = str(ANALYSIS / "cache_redetect")
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "out", "deploy_nav_collage.png")
 
 def load_run(run):

@@ -5,6 +5,8 @@ import os
 import glob
 import re
 import sys
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import DATA  # noqa: E402
 
 # --- CONFIGURATION ---
 CALIB_FILE = "field_test/CALIBRATION.md"
@@ -81,13 +83,13 @@ def process_run(run_dir, offset):
     print(f"Done.")
 
 def main():
-    base_data_path = "field_test/data"
+    base_data_path = str(DATA)
     
     # 1. Select Session (Day)
-    sessions = sorted([d for d in os.listdir(base_data_path) if os.path.isdir(os.path.join(base_data_path, d)) and d != 'apriltag_recording' and d != 'old'])
+    sessions = sorted([d for d in os.listdir(base_data_path) if glob.glob(os.path.join(base_data_path, d, "run_*", "raw")) and d != 'apriltag_recording' and d != 'old'])
     
     if not sessions:
-        print("No session folders found in field_test/data/")
+        print("No session folders (data/<session>/run_*/raw) found in data/")
         return
 
     print("\nAvailable Sessions:")

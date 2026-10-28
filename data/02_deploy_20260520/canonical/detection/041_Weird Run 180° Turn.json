@@ -1,0 +1,35 @@
+{
+  "run_id": "20260520_195142_finetune_run_6",
+  "alpha": 0.9,
+  "beta": -20.0,
+  "blur": 3,
+  "quad_decimate": 2.0,
+  "score": 0.9962848297213622,
+  "n_visible": 1615,
+  "n_detected": 1609,
+  "reused_from": "001_Glide",
+  "n_missed": 6,
+  "n_gaps": 2,
+  "n_isolated": 0,
+  "longest_gap_s": 0.04926586151123047,
+  "longest_interior_gap_s": 0.04926586151123047,
+  "kind_counts": {
+    "interior": 2
+  },
+  "gaps": [
+    {
+      "t_start": 1.4786381721496582,
+      "t_end": 1.505946159362793,
+      "n_frames": 2,
+      "duration": 0.027307987213134766,
+      "kind": "interior"
+    },
+    {
+      "t_start": 1.5860381126403809,
+      "t_end": 1.6353039741516113,
+      "n_frames": 4,
+      "duration": 0.04926586151123047,
+      "kind": "interior"
+    }
+  ]
+}

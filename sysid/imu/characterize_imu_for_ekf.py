@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import json
 import os
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import IMU_NOISE  # noqa: E402
 
 def characterize_imu(csv_files, output_pdf="sysid/imu/plots/imu_ekf_characterization.pdf", config_json="sysid/imu/data/imu_params.json"):
     all_stats = []
@@ -121,7 +123,7 @@ def characterize_imu(csv_files, output_pdf="sysid/imu/plots/imu_ekf_characteriza
 
 if __name__ == "__main__":
     data_files = [
-        'sysid/imu/data/imu_9DOF_data_20260320_185648.csv',
-        'sysid/imu/data/imu_9DOF_data_20260320_191340.csv'
+        str(IMU_NOISE / 'imu_9DOF_data_20260320_185648.csv'),
+        str(IMU_NOISE / 'imu_9DOF_data_20260320_191340.csv')
     ]
     characterize_imu(data_files)

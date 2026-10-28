@@ -11,7 +11,7 @@ def check_yaw():
     print(" [3] Compare Integrated Gyro (Pure Gyro vs Vision)")
     mode = input("> ").strip()
 
-    base_data = "field_test/data"
+    base_data = "data"
     sessions = sorted([d for d in os.listdir(base_data) if os.path.isdir(os.path.join(base_data, d)) and d not in ['old', 'apriltag_recording']])
     print("\nSelect Session:"); [print(f"  [{i+1}] {s}") for i, s in enumerate(sessions)]
     try:

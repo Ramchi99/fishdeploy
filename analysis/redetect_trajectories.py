@@ -14,9 +14,11 @@ CAM = [1055.0202, 1054.2105, 945.8357, 489.0351]   # overhead intrinsics (vision
 TAG = 0.080
 FISH, ANCHOR, TARGET = 0, 1, 2
 HERE = os.path.dirname(os.path.abspath(__file__))
-RUNS_DIR = os.path.join(HERE, "..", "deploy", "runs")
-CACHE_DIR = os.path.join(HERE, "cache")
-OUT_DIR = os.path.join(HERE, "cache_redetect")
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..")))   # repository root
+from paths import DEPLOY, ANALYSIS  # noqa: E402
+RUNS_DIR = str(DEPLOY)
+CACHE_DIR = str(ANALYSIS / "cache")
+OUT_DIR = str(ANALYSIS / "cache_redetect")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 PASSES = [

@@ -11,6 +11,8 @@ import sys
 import numpy as np
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import DEPLOY  # noqa: E402
 sys.path.insert(0, _HERE)
 import build_analysis as B
 
@@ -147,7 +149,7 @@ def main():
     lines.append("- **Reached ratios are descriptive only** — targets were placed by hand, "
                  "not sampled uniformly, so the ratios are not an unbiased reachability rate.")
 
-    out = os.path.join(_HERE, "RUN_CATALOG.md")
+    out = str(DEPLOY / "RUN_CATALOG.md")
     open(out, "w").write("\n".join(lines) + "\n")
     print("saved", out)
     print(f"flagged miss>{int(MISS*100)}%: {sorted(set(flagged_miss))}")

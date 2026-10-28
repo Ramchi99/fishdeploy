@@ -5,6 +5,8 @@ import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import TAIL_BENCH  # noqa: E402
 
 plt.rcParams.update({
     "text.usetex": True,
@@ -22,12 +24,12 @@ def main():
     args = parser.parse_args()
 
     # Load all relevant files matching dataset and env
-    search_pattern = os.path.join("data", f"*_{args.dataset}_Benchmark_{args.env}_*.csv")
+    search_pattern = os.path.join(str(TAIL_BENCH / args.env), f"*_{args.dataset}_Benchmark_{args.env}_*.csv")
     files = glob.glob(search_pattern)
     
     # Also support older format for backward compatibility if dataset wasn't used
     if not files and args.dataset == "default":
-        search_pattern = os.path.join("data", f"*_Benchmark_{args.env}_*.csv")
+        search_pattern = os.path.join(str(TAIL_BENCH / args.env), f"*_Benchmark_{args.env}_*.csv")
         files = glob.glob(search_pattern)
         
     if not files:

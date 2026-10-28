@@ -42,7 +42,7 @@ need no correction and are used exactly as logged.
 
 Usage:
     python deploy/laptop/render_trace.py \
-        --session deploy/runs/20260520_192737_figure_eight_5/raw \
+        --session data/deploy_runs/20260520_192737_figure_eight_5/raw \
         --start 3.5 --end 13.0
 """
 import argparse

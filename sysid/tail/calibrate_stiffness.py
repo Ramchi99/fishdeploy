@@ -6,6 +6,8 @@ import sys
 
 # --- BULLETPROOF PATHING ---
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..")))   # repository root
+from paths import TAIL_BENCH  # noqa: E402
 sys.path.append(os.path.abspath(os.path.join(SCRIPT_DIR, '..')))
 sys.path.append(os.path.abspath(os.path.join(SCRIPT_DIR, '../..')))
 
@@ -109,7 +111,7 @@ servo.torqueDisable()
 closePortObject()
 
 if len(currents_tested) > 0:
-    save_dir = os.path.join(SCRIPT_DIR, "data")
+    save_dir = str(TAIL_BENCH / "stiffness")
     os.makedirs(save_dir, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

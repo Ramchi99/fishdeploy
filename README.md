@@ -23,17 +23,15 @@ simulation, the model fits, the training code and the paper figures are in
 
 | Folder | What |
 |---|---|
+| `data/` | The measured data the paper reads, in the folder names of the public archive: the 12 open-loop field runs, the deployment runs of 2026-05-20 with the analysis caches and the curated closed-loop segments, the bench sweeps. `data/README.md` says for every file what produced it and what reads it |
 | `hardware/` | Dynamixel wrappers (`dxlSetup/`), IMU reader, UPS/battery monitor, single-motor test scripts |
-| `sysid/` | Measurement scripts: tail benchmark sweeps in air and water (`tail/`), IMU noise logs (`imu/`), encoder noise (`motor_noise/`), IMU axis check. The CSVs they produced are in `sysid/*/data/` |
-| `field_test/` | Open-loop swimming runs: `unified_test.py` on the Pi, the laptop pipeline `pipeline/01…04` (video sync, AprilTag pose, resampling to `03_field2sim_ready.csv`, plots), camera calibration, cross-run evaluation. The 12 runs of 2026-04-01 are in `field_test/data/` |
-| `deploy/` | Closed-loop deployment: `pi/` (policy, CPG, motor, IMU, logger), `laptop/` (vision streamer, post-run analysis, renders), `shared/` (UDP protocol, tag tracker), `configs/`, `preflight.py`, `obs_verify/`. The 43 runs of 2026-05-20 are in `deploy/runs/` |
-| `analysis/` | The post-session analysis of those 43 runs: tag re-detection, trajectory caches, reachability tables, strobe composites, trace videos |
+| `sysid/` | Measurement scripts: tail benchmark sweeps in air and water (`tail/`), IMU noise logs (`imu/`), encoder noise (`motor_noise/`), the IMU axis check |
+| `field_test/` | Open-loop swimming runs: `unified_test.py` on the Pi, the laptop pipeline `pipeline/01…04` (video sync, AprilTag pose, resampling to `03_field2sim_ready.csv`, plots), camera calibration, cross-run evaluation |
+| `deploy/` | Closed-loop deployment: `pi/` (policy, CPG, motor, IMU, logger), `laptop/` (vision streamer, post-run analysis, renders), `shared/` (UDP protocol, tag tracker), `configs/`, `preflight.py`, `obs_verify/` |
+| `analysis/` | The post-session analysis of the deployment runs: tag re-detection, trajectory caches, reachability tables, strobe composites, trace videos; `canonical/`: the conversion of curated segments into the 1 kHz CSVs the closed-loop fits read |
 | `policies/` | The deployed SAC policy (md5 `7bbe08b8`) |
 | `scripts/` | `deploy_to_pi.sh` (rsync code to the Pi), `fetch_data.sh` (pull a run back and post-process it) |
-| `deploy/tests/` | pytest suite for the deployment stack (no hardware needed) |
-
-`DATA.md` lists every data set in this repo and in the archive, with the script that produced it and the
-figure that reads it.
+| `paths.py` | Where every script finds `data/`; change a folder in one place |
 
 ## Setup
 
@@ -67,7 +65,7 @@ python3 sysid/tail/run_dynamic_benchmark.py --env water --pulley_radius 17.5 --d
 python3 sysid/imu/log_9dof.py
 ```
 
-The sweeps write `sysid/tail/data/<date>_<set>_r<radius>_d<amplitude>_Benchmark_<air|water>_<f>Hz_<amp>Amp.csv`.
+The sweeps write `data/03_sysid/tail_benchmark/<env>/<date>_<set>_r<radius>_d<amplitude>_Benchmark_<env>_<f>Hz_<amp>Amp.csv`.
 The 100 files `20260320_*_r17.5_*_Benchmark_air_*` are the input of the tail-stiffness fit in fishsim
 (`sysid/tail_stiffness/step1_stiffness.py`, paper Fig. 4). `sysid/tail/README.md` has the full protocol;
 `sysid/tail/analyze_dynamic_benchmark.py` plots the Bode curves on the laptop.
@@ -77,7 +75,7 @@ The 100 files `20260320_*_r17.5_*_Benchmark_air_*` are the input of the tail-sti
 ```bash
 # Pi, fish in the pool, phone filming from above
 python3 field_test/unified_test.py --name first_swim --freq 2.0 --amp 9.0 --duration 30.0
-# laptop, after copying the phone video and the Pi CSV into field_test/data/<session>/<run>/raw/
+# laptop, after copying the phone video and the Pi CSV into data/<session>/<run>/raw/
 python3 field_test/pipeline/01_sync_and_convert.py     # phone clock → Unix time via the reference frame
 python3 field_test/pipeline/02_process_swimming.py     # AprilTag → gravity-aligned 6-DOF pose
 python3 field_test/pipeline/03_prep_field2sim.py       # resample → processed/03_field2sim_ready.csv
@@ -85,7 +83,7 @@ python3 field_test/pipeline/04_plot_field_test.py
 ```
 
 The twelve runs of 2026-04-01 (1 to 4 Hz, 5 to 12 mm, two with a turn offset) are in
-`field_test/data/20260401_first_swim/`. Their `03_field2sim_ready.csv` files are what fishsim's
+`data/01_field_openloop_20260401/`. Their `03_field2sim_ready.csv` files are what fishsim's
 `sysid/fluid/opt_field2sim.py` fits the 15 fluid coefficients to (paper Fig. 5, Table I) and what paper Fig. 9
 reads. Camera calibration and the per-run vision settings: `field_test/CALIBRATION.md`, `field_test/vision_settings.json`.
 
@@ -106,12 +104,12 @@ python3 deploy/pi/deploy_main.py --name run_1 --env-config deploy/configs/cpg_24
 
 The Pi calibrates the gyro (fish must be still), waits for the first pose packet and reports READY. Press R
 in the laptop window to start and R again to stop; the laptop then pulls the Pi log and runs
-`deploy/laptop/post_run.py`, and the run lands in `deploy/runs/<timestamp>_<name>/{raw,processed}`.
+`deploy/laptop/post_run.py`, and the run lands in `data/deploy_runs/<timestamp>_<name>/{raw,processed}`.
 `deploy/README.md` is the complete reference: workflows (open loop, shadow, noise floor, RL), the Pi setup,
 every flag, and why inference must be stochastic. `deploy/obs_verify/` walks through the ten physical checks
 that each observation dimension matches the simulator before a water run.
 
-The 43 runs of 2026-05-20 in `deploy/runs/` are the paper's deployment set (static, disturbance, out-of-distribution,
+The 43 runs of 2026-05-20 in `data/02_deploy_20260520/` are the paper's deployment set (static, disturbance, out-of-distribution,
 moving-target and figure-eight targets), each with `raw/run.csv` (50 Hz: observation, action, CPG state, pose age),
 `run_config.json` and `frame_timestamps.csv`. The videos are in the archive.
 
@@ -125,14 +123,19 @@ python analysis/gen_report_strobes.py  # the strobe composites of paper Fig. 1 a
 ```
 
 Needs the videos from the archive next to the CSVs. The outputs that the paper figures read (`cache/`,
-`cache_redetect/`, `cache_heading/`, `reachability/run_geometry.csv`, `report_strobes/`) are committed, so fishsim
-rebuilds every figure from a clone of this repo alone.
+`cache_redetect/`, `cache_heading/`, `reachability/run_geometry.csv`, `report_strobes/`) are committed under
+`data/02_deploy_20260520/analysis/`, so fishsim rebuilds every figure from a clone of this repo alone.
+
+The closed-loop fits in fishsim (the direct-action fluid set and the identified motor of the paper's motor
+table) read curated 1 kHz segments of these runs, `data/02_deploy_20260520/canonical/`. The segments were
+chosen by hand (the manifest `layer2_parts.yml` records them); `analysis/canonical/convert_segments.py`
+turns a run's video and `run.csv` into the canonical CSVs.
 
 ## Archive
 
 Videos, raw phone data, calibration frames and the identification checkpoints (15 GB) are on OneDrive:
 <https://1drv.ms/f/c/b311444f04e9154f/IgA5FN-kerWHS5HrusoArlQrAQ6lR6rIJepderhEuW8ZCB8?e=016YIx>.
-Its `README.md` and `SHA256SUMS` describe and verify every file; `DATA.md` here maps archive to repo paths.
+Its `README.md` and `SHA256SUMS` describe and verify every file; `data/README.md` here maps archive to repo paths.
 
 ## Citation and credits
 

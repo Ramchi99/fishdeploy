@@ -4,8 +4,10 @@ import cv2
 import numpy as np
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-RUNS_DIR = os.path.abspath(os.path.join(_HERE, "..", "deploy", "runs"))
-OUT_DIR = os.path.join(_HERE, "insane_run_8_frames")
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import DEPLOY, ANALYSIS  # noqa: E402
+RUNS_DIR = str(DEPLOY)
+OUT_DIR = str(ANALYSIS / "insane_run_8_frames")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 def main():

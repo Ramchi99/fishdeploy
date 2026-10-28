@@ -3,6 +3,8 @@ import glob
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")))   # repository root
+from paths import TAIL_BENCH  # noqa: E402
 
 # LaTeX-style plotting configuration
 plt.rcParams.update({
@@ -29,7 +31,7 @@ def process_benchmark_data(df_data):
     return {"max_rpm": max_rpm, "max_load": max_load, "rmse_deg": rmse_deg, "max_error_deg": max_error_deg}
 
 def find_best_files(base_dir, dist, freq, env):
-    pattern = os.path.join(base_dir, f"*_r17.5_d{dist:04.1f}_Benchmark_{env}_{freq:03.1f}Hz_*.csv")
+    pattern = os.path.join(base_dir, env, f"*_r17.5_d{dist:04.1f}_Benchmark_{env}_{freq:03.1f}Hz_*.csv")
     files = glob.glob(pattern)
     
     amp_map = {}
@@ -45,7 +47,7 @@ def find_best_files(base_dir, dist, freq, env):
     return amp_map
 
 def generate_combined_summary(dist, frequencies):
-    base_dir = "sysid/tail/data"
+    base_dir = str(TAIL_BENCH)   # air/ and water/ subfolders; water/ lives in the archive only
     plot_dir = "sysid/tail/plots/comparison_air_water/"
     os.makedirs(plot_dir, exist_ok=True)
     

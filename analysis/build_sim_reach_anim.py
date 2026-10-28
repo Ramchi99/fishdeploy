@@ -23,7 +23,9 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter
 from matplotlib.lines import Line2D
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-SIMDIR = os.path.join(_HERE, "reachability", "sim_mujoco")
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import ANALYSIS  # noqa: E402
+SIMDIR = str(ANALYSIS / "reachability" / "sim_mujoco")
 
 RMAX        = 3.0
 FPS         = 30

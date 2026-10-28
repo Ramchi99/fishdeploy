@@ -12,8 +12,10 @@ plt.rcParams.update({
 })
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(_HERE, "report_strobes")
-OUT = os.path.join(_HERE, "report_strobes", "deploy_strobe_montage.png")
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import ANALYSIS  # noqa: E402
+SRC = str(ANALYSIS / "report_strobes")
+OUT = str(ANALYSIS / "report_strobes" / "deploy_strobe_montage.png")
 
 PANELS = [
     ("hope_didnt_work_2_highres_traceover_strobe.png",      "(a) First successful run"),

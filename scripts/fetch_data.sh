@@ -23,10 +23,10 @@ if [ "$1" = "rl" ]; then
         exit 1
     fi
     RUN_NAME="$2"
-    RAW_DEST="./deploy/runs/${RUN_NAME}/raw"
+    RAW_DEST="./data/deploy_runs/${RUN_NAME}/raw"
     mkdir -p "$RAW_DEST"
 
-    echo "Fetching Pi:deploy/data/${RUN_NAME}/ → deploy/runs/${RUN_NAME}/raw/ ..."
+    echo "Fetching Pi:deploy/data/${RUN_NAME}/ → data/deploy_runs/${RUN_NAME}/raw/ ..."
     rsync -avz --prune-empty-dirs \
                --include="*/" \
                --include="*.csv" \
@@ -50,8 +50,8 @@ if [ "$1" = "rl" ]; then
     [ -x "$PYTHON_BIN" ] || PYTHON_BIN="python3"
 
     echo "Running post_run.py..."
-    "$PYTHON_BIN" deploy/laptop/post_run.py "deploy/runs/${RUN_NAME}"
-    echo "Fetch + analysis complete: deploy/runs/${RUN_NAME}/"
+    "$PYTHON_BIN" deploy/laptop/post_run.py "data/deploy_runs/${RUN_NAME}"
+    echo "Fetch + analysis complete: data/deploy_runs/${RUN_NAME}/"
 else
     echo "Fetching data files (*.csv, *.png, *.pdf, *.mat, *.log, *.txt, *.json) from $PI_USER@$PI_HOST..."
     rsync -avz --prune-empty-dirs \

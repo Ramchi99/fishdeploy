@@ -7,25 +7,27 @@ venv/
 .claude/
 CLAUDE.md
 
-# Recordings and renders are never committed; the paper's runs live in the archive (see DATA.md)
+# Recordings and renders are never committed; the paper's videos live in the archive (see data/README.md)
 *.avi
 *.mp4
 *.mov
 *.jpg
 *.jpeg
+*.png
+!data/02_deploy_20260520/analysis/report_strobes/*.png
 
-# New experiment output lands here. The 43 paper runs and the 12 field runs are committed on purpose;
-# add a new run with `git add -f` only if a paper or report reads it.
-deploy/runs/
+# Generated outputs of the analysis and sysid scripts
+data/02_deploy_20260520/analysis/videos/
+data/02_deploy_20260520/analysis/strobe_plots/
+data/02_deploy_20260520/analysis/strobe_editor/
+data/02_deploy_20260520/analysis/insane_run_8_frames/
+data/02_deploy_20260520/analysis/reachability/sim_mujoco*/
+sysid/*/plots/
+analysis/out/
+
+# New experiments: fetch_data.sh and unified_test.py write here. Commit a run only if a paper or report reads it.
+data/deploy_runs/
+data/field_logs/
 deploy/recordings/
 deploy/preflight_logs/
-field_test/data/
-field_test/plots/
-analysis/out/
-analysis/videos/
-analysis/strobe_plots/
-analysis/tag_pipeline_frames/
-analysis/strobe_editor/
-sysid/*/plots/
-*.png
-!analysis/report_strobes/*.png
+deploy/data/

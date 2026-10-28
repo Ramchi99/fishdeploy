@@ -14,9 +14,11 @@ import os, sys, base64, json
 import cv2, numpy as np
 import matplotlib
 from build_strobe_plots import CONFIG, segment_fish, _HERE, RUNS_DIR, CACHE_DIR
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")))   # repository root
+from paths import ANALYSIS  # noqa: E402
 
 OUT_W = 1280
-OUT_DIR = os.path.join(_HERE, "strobe_editor")
+OUT_DIR = str(ANALYSIS / "strobe_editor")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 REPORT_RUNS = ["hope_didnt_work_2_highres", "insane_run_8_middle_bg_highres", "insane_run_2_highres",

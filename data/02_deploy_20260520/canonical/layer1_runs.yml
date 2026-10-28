@@ -1,0 +1,576 @@
+- run_id: 20260520_151453_hope_didnt_work_1
+  source: rl_deploy
+  status: unsure
+  name: Glide
+  notes: maybe the tendon snapped (maybe we can use it only for the drag portion)
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: true
+  rough_start: 0.349
+  rough_end: 18.856
+  occluded: []
+  num: 1
+- run_id: 20260520_155106_hope_didnt_work_2
+  source: rl_deploy
+  status: valid
+  name: Relief
+  notes: First successful RL run
+  reached_target: true
+  good_for_fluidid: true
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 10.774
+  occluded:
+  - - 10.414
+    - 10.774
+  num: 2
+- run_id: 20260520_155233_hope_didnt_work_3
+  source: rl_deploy
+  status: unsure
+  name: Normal OOD
+  notes: target was probably angled to much to the side
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 7.349
+  occluded: []
+  num: 3
+- run_id: 20260520_155400_hope_didnt_work_4
+  source: rl_deploy
+  status: unsure
+  name: Glide 2
+  notes: also had some weird behaviour with the motor, and the tendon maybe also snapped
+    again!
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: true
+  rough_start: 0
+  rough_end: 8.77
+  occluded: []
+  num: 4
+- run_id: 20260520_162457_hope_didnt_work_5
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: something is wrong with the camera framerate, and also maybe the tendon where
+    to loose!
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 5
+- run_id: 20260520_162813_hope_didnt_work_6
+  source: rl_deploy
+  status: valid
+  name: Normal Run
+  notes: little bit of turning / target initially to the left side (30°)
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 27.525
+  occluded:
+  - - 27.331
+    - 27.525
+  num: 6
+- run_id: 20260520_163038_polaris
+  source: rl_deploy
+  status: unsure
+  name: Big Turn
+  notes: also weird motor behaviour, but maybe usefull for fluid ID
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: true
+  rough_start: 0
+  rough_end: 8.774
+  occluded: []
+  num: 7
+- run_id: 20260520_163530_polaris_2
+  source: rl_deploy
+  status: valid
+  name: Normal Run 2
+  notes: just a normal run
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 13.587
+  occluded:
+  - - 13.237
+    - 13.587
+  num: 8
+- run_id: 20260520_164106_crazy_run_1
+  source: rl_deploy
+  status: unsure
+  name: Normal Failed Run
+  notes: also, didn'r quite turned fast enough!
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 14.99
+  occluded: []
+  num: 9
+- run_id: 20260520_164401_crazy_run_2
+  source: rl_deploy
+  status: unsure
+  name: Big Turn 2
+  notes: also weird motor behaviour and just didn't do what the setpoint commanded!
+    (but maybe still good for fluid ID)
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: true
+  rough_start: 0
+  rough_end: 5.36
+  occluded: []
+  num: 10
+- run_id: 20260520_164504_crazy_run_3
+  source: rl_deploy
+  status: unsure
+  name: Normal Failed Run
+  notes: again, just not to much turning!
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 11.46
+  occluded: []
+  num: 11
+- run_id: 20260520_164617_crazy_run_4
+  source: rl_deploy
+  status: valid
+  name: Normal Run (Bullseye)
+  notes: but weird first actual motor position thing
+  reached_target: true
+  good_for_fluidid: true
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 19.357
+  occluded:
+  - - 18.902
+    - 19.357
+  num: 12
+- run_id: 20260520_164933_crazy_run_5
+  source: rl_deploy
+  status: valid
+  name: Near Miss Turn Run
+  notes: ''
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 17.525
+  occluded: []
+  num: 13
+- run_id: 20260520_165359_full_success_1
+  source: rl_deploy
+  status: valid
+  name: Normal Run 3
+  notes: ''
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 11.69
+  occluded:
+  - - 11.385
+    - 11.69
+  num: 14
+- run_id: 20260520_165628_full_success_2
+  source: rl_deploy
+  status: valid
+  name: Normal Turn Run
+  notes: really nice turn run / target to the left of the fish
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 31.297
+  occluded: []
+  num: 15
+- run_id: 20260520_165858_full_success_3
+  source: rl_deploy
+  status: invalid
+  name: Bad 2
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 16
+- run_id: 20260520_170227_insane_run_1
+  source: rl_deploy
+  status: valid
+  name: Initial Backwards Velocity
+  notes: it starts with an initial backwards velocity
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 15.933
+  occluded: []
+  num: 17
+- run_id: 20260520_170419_insane_run_2
+  source: rl_deploy
+  status: invalid
+  name: Bad 3
+  notes: if not weird frame trunctuated or dropped would be a good one
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 18
+- run_id: 20260520_173157_insane_run_3
+  source: rl_deploy
+  status: valid
+  name: Initial Rotational Velocity
+  notes: maybe initially a little rotational velocity
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 23.909
+  occluded:
+  - - 23.592
+    - 23.909
+  num: 19
+- run_id: 20260520_173319_insane_run_4
+  source: rl_deploy
+  status: valid
+  name: Disturbance with Stick (Bullseye)
+  notes: disturbed three times with stick
+  reached_target: true
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 14.331
+  occluded:
+  - - 13.97
+    - 14.331
+  num: 20
+- run_id: 20260520_173429_insane_run_5
+  source: rl_deploy
+  status: valid
+  name: Disturbance with Stick 2 (Bullseye)
+  notes: one big disturbance with stick
+  reached_target: true
+  good_for_fluidid: false
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 16.737
+  occluded:
+  - - 15.648
+    - 16.737
+  num: 21
+- run_id: 20260520_173558_insane_run_6
+  source: rl_deploy
+  status: valid
+  name: Fluid Disturbance Run
+  notes: disturbed with fluid turbulences
+  reached_target: true
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 18.496
+  occluded:
+  - - 17.138
+    - 18.496
+  num: 22
+- run_id: 20260520_173717_insane_run_7
+  source: rl_deploy
+  status: valid
+  name: Fluid Disturbance Run 2
+  notes: disturbed fluid with stick (aligned accidentally)
+  reached_target: true
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 16.566
+  occluded:
+  - - 16.202
+    - 16.566
+  num: 23
+- run_id: 20260520_173853_insane_run_8
+  source: rl_deploy
+  status: valid
+  name: Hard Disturbance Run
+  notes: disturbed fluid and fish with stick
+  reached_target: true
+  good_for_fluidid: false
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 15.637
+  occluded:
+  - - 15.228
+    - 15.637
+  num: 24
+- run_id: 20260520_174144_amazing_run_1
+  source: rl_deploy
+  status: valid
+  name: Moved Target Mid Run
+  notes: moved the target from one fixed point to a different fixed point
+  reached_target: true
+  good_for_fluidid: true
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 17.32
+  occluded:
+  - - 16.901
+    - 17.32
+  num: 25
+- run_id: 20260520_174706_amazing_run_2
+  source: rl_deploy
+  status: valid
+  name: Circle Run
+  notes: fish did one full circle
+  reached_target: true
+  good_for_fluidid: true
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 24.784
+  occluded:
+  - - 10.149
+    - 10.926
+  num: 26
+- run_id: 20260520_175021_amazing_run_3
+  source: rl_deploy
+  status: valid
+  name: Figure Eight Attempt
+  notes: failed figure eight attempt
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 21.521
+  occluded:
+  - - 11.627
+    - 12.463
+  num: 27
+- run_id: 20260520_175136_amazing_run_4
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 28
+- run_id: 20260520_175614_amazing_run_5
+  source: rl_deploy
+  status: valid
+  name: Figure Eight Attempt 2
+  notes: failed figure eight attempt
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 17.094
+  occluded: []
+  num: 29
+- run_id: 20260520_175736_amazing_run_6
+  source: rl_deploy
+  status: valid
+  name: Figure Eight Attempt 3
+  notes: failed figure eight attempt
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 40.211
+  occluded:
+  - - 12.692
+    - 13.185
+  - - 36.843
+    - 37.541
+  num: 30
+- run_id: 20260520_180104_amazing_run_7
+  source: rl_deploy
+  status: valid
+  name: Figure Eight Attempt 4
+  notes: failed figure eight attempt
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 22.895
+  occluded:
+  - - 13.81
+    - 14.511
+  num: 31
+- run_id: 20260520_180234_amazing_run_8
+  source: rl_deploy
+  status: valid
+  name: Figure Eight Attempt 5
+  notes: failed figure eight attempt
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 31.876
+  occluded:
+  - - 13.141
+    - 13.931
+  - - 29.199
+    - 29.646
+  num: 32
+- run_id: 20260520_190041_figure_eight_4
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 33
+- run_id: 20260520_192737_figure_eight_5
+  source: rl_deploy
+  status: invalid
+  name: Bad (Figure Eight)
+  notes: maybe recoverable figure eight attempt
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 34
+- run_id: 20260520_193345_finetune_run_1
+  source: rl_deploy
+  status: unsure
+  name: Normal Turn Run 2
+  notes: i'm a little worried about the motor setpoint and encoder value for zero!
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 30.631
+  occluded:
+  - - 30.132
+    - 30.583
+  num: 35
+- run_id: 20260520_193531_finetune_run_2
+  source: rl_deploy
+  status: unsure
+  name: Weird Hardware Error
+  notes: mid run the motor got stuck (not zeroed as the encoder shows!)
+  reached_target: false
+  good_for_fluidid: true
+  highlight: false
+  has_error: true
+  rough_start: 0
+  rough_end: 30.425
+  occluded: []
+  num: 36
+- run_id: 20260520_194106_finetune_run_3
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 37
+- run_id: 20260520_194207_finetune_run_4
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 38
+- run_id: 20260520_194717_finetune_run_4
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 39
+- run_id: 20260520_195021_finetune_run_5
+  source: rl_deploy
+  status: valid
+  name: Normal Turn Run 3
+  notes: target to the right of the fish
+  reached_target: true
+  good_for_fluidid: true
+  highlight: false
+  has_error: false
+  rough_start: 0
+  rough_end: 18.408
+  occluded:
+  - - 18.047
+    - 18.408
+  num: 40
+- run_id: 20260520_195142_finetune_run_6
+  source: rl_deploy
+  status: unsure
+  name: Weird Run 180° Turn
+  notes: probably recoverable (dropped frames at the end)
+  reached_target: true
+  good_for_fluidid: false
+  highlight: true
+  has_error: false
+  rough_start: 0
+  rough_end: 31.73
+  occluded:
+  - - 31.369
+    - 31.73
+  num: 41
+- run_id: 20260520_200038_finetune_run_9
+  source: rl_deploy
+  status: invalid
+  name: Bad
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: false
+  num: 42
+- run_id: 20260520_200406_finetune_run_10
+  source: rl_deploy
+  status: unsure
+  name: Weird Failed Run
+  notes: ''
+  reached_target: false
+  good_for_fluidid: false
+  highlight: false
+  has_error: true
+  rough_start: 0
+  rough_end: 8.522
+  occluded: []
+  num: 43

@@ -28,15 +28,17 @@ import cv2
 import numpy as np
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
+from paths import DEPLOY, ANALYSIS  # noqa: E402
 _LAPTOP = os.path.join(_HERE, "..", "deploy", "laptop")
 sys.path.insert(0, _LAPTOP)
 from render_trace import (Detector, preprocess, tag_center, draw_trace, draw_arrow,
                           build_timeline, load_camera_params, OUT_W, SETTINGS_FILE)
 
-RUNS_DIR = os.path.join(_HERE, "..", "deploy", "runs")
-VIDEOS   = os.path.join(_HERE, "videos")
-REACH    = os.path.join(_HERE, "reachability")
-CACHE    = os.path.join(_HERE, "cache")
+RUNS_DIR = str(DEPLOY)
+VIDEOS   = str(ANALYSIS / "videos")
+REACH    = str(ANALYSIS / "reachability")
+CACHE    = str(ANALYSIS / "cache")
 for d in (VIDEOS, REACH, CACHE):
     os.makedirs(d, exist_ok=True)
 

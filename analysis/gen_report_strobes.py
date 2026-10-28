@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Generate the borderless report strobes (v2 trace-over + v3 fish-over) into report_strobes/."""
 import os
-import build_strobe_plots as b
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_strobe_plots as b  # noqa: E402
 
 RUNS = ["hope_didnt_work_2_highres", "insane_run_8_middle_bg_highres", "insane_run_2_highres",
         "finetune_run_7_highres", "finetune_run_8_highres", "figure_eight_6_clean_highres"]
 FULL = dict(b.CONFIG)
 
-b.OUT_DIR = os.path.join(b._HERE, "report_strobes")
+b.OUT_DIR = str(b.ANALYSIS / "report_strobes")
 os.makedirs(b.OUT_DIR, exist_ok=True)
 b.TRACE_OUTLINE = False                          # no black border on the trace
 
