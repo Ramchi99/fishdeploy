@@ -1,0 +1,13 @@
+{
+  "mode": "shadow",
+  "trajectory": "zero",
+  "freq": 1.5,
+  "amp": 0.3,
+  "offset": 0.0,
+  "model_hash": "786a8c60",
+  "git_hash": "unknown",
+  "pi_ip": "127.0.1.1",
+  "clock_offset_ms": 2207.409620285034,
+  "record": true,
+  "start_time": 1778160916.5828414
+}

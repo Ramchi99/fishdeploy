@@ -2,7 +2,7 @@
 Post-session visualization from run.csv.
 
 Usage:
-    python deploy/laptop/plot_run.py deploy/data/20260505_143022_pool_test_1
+    python deploy/laptop/plot_run.py data/deploy_runs/20260505_143022_pool_test_1/raw
 """
 import argparse, os, sys
 import numpy as np

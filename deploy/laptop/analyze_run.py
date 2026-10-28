@@ -10,7 +10,7 @@ Analyzes a single run.csv and prints a text report + saves a PNG with:
   - IMU sensor noise
 
 Usage (from repo root):
-    python deploy/laptop/analyze_run.py deploy/data/YYYYMMDD_HHMMSS_<name>
+    python deploy/laptop/analyze_run.py data/deploy_runs/YYYYMMDD_HHMMSS_<name>
     python deploy/laptop/analyze_run.py path/to/run.csv
 """
 
@@ -129,9 +129,18 @@ def analyze(run_dir: str, save_png: bool = True) -> dict:
     tracking_max = float(np.max(np.abs(tracking_err)))
 
     # ── 4. IMU noise ────────────────────────────────────────────────────────────
-    wx = df["obs_03"].to_numpy()
-    wy = df["obs_04"].to_numpy()
-    wz = df["obs_05"].to_numpy()
+    # Two observation layouts exist in the logs: the deployed 24-D one (ObsAssemblerCPG24D: yaw rate at
+    # obs_03, the most recent vision frame at obs_14..17, no target velocity) and the 14-D one of the
+    # May 2026 shadow runs (wx, wy, wz at obs_03..05, dist/vec at obs_06..08, target velocity at 09..10).
+    n_obs = sum(c.startswith("obs_") for c in df.columns)
+    layout_24d = n_obs == 24
+    if layout_24d:
+        wz = df["obs_03"].to_numpy()
+        wx = wy = np.zeros_like(wz)                       # not in the observation
+    else:
+        wx = df["obs_03"].to_numpy()
+        wy = df["obs_04"].to_numpy()
+        wz = df["obs_05"].to_numpy()
     imu_std = {"wx": float(np.std(wx)), "wy": float(np.std(wy)), "wz": float(np.std(wz))}
     imu_mean = {"wx": float(np.mean(wx)), "wy": float(np.mean(wy)), "wz": float(np.mean(wz))}
 
@@ -141,11 +150,17 @@ def analyze(run_dir: str, save_png: bool = True) -> dict:
     motor_vel_mean = float(np.mean(motor_vel))
 
     # ── 6. Vision channel noise (meaningful only for static / zero-trajectory runs)
-    dist_arr   = df["obs_06"].to_numpy()
-    vec_x_arr  = df["obs_07"].to_numpy()
-    vec_y_arr  = df["obs_08"].to_numpy()
-    vvel_x_arr = df["obs_09"].to_numpy()
-    vvel_y_arr = df["obs_10"].to_numpy()
+    if layout_24d:
+        dist_arr   = df["obs_14"].to_numpy()
+        vec_x_arr  = df["obs_15"].to_numpy()
+        vec_y_arr  = df["obs_16"].to_numpy()
+        vvel_x_arr = vvel_y_arr = np.zeros_like(dist_arr)  # not in the observation
+    else:
+        dist_arr   = df["obs_06"].to_numpy()
+        vec_x_arr  = df["obs_07"].to_numpy()
+        vec_y_arr  = df["obs_08"].to_numpy()
+        vvel_x_arr = df["obs_09"].to_numpy()
+        vvel_y_arr = df["obs_10"].to_numpy()
     vision_noise = {
         "dist_mean":   float(np.mean(dist_arr)),
         "dist_std":    float(np.std(dist_arr)),
@@ -333,7 +348,7 @@ def analyze(run_dir: str, save_png: bool = True) -> dict:
             # → add timing jitter in sim: dt ~ Normal(1/hz, step_dt_std_ms/1000)
         },
         "obs_noise_std": {
-            # Indexed to match obs layout in ObsAssemblerCPG14D / env_sofi_phase1_1_hwobsNoise
+            # Physical channels; the obs_NN prefixes are the indices of the 14-D layout the May 2026 runs used
             "obs_00_01_motor_pos_rad":    round(motor_pos_std, 5),
             # → noise on motor angle BEFORE cos/sin encoding: pos_rad += N(0, this)
             "obs_02_motor_vel_rad_s":     round(motor_vel_std, 5),

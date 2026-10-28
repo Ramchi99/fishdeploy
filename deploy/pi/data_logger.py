@@ -6,11 +6,11 @@ import time
 import numpy as np
 
 
-_OBS_DIM_BY_ENV = {"cpg_12d": 12, "cpg_14d": 14, "cpg_24d": 24, "da_rl_policy_40d": 40}
+_OBS_DIM_BY_ENV = {"cpg_24d": 24}
 
 
 class DataLogger:
-    """Writes run.csv, run_config.json, replay_buffer.csv (optional), summary.png (on close).
+    """Writes run.csv, run_config.json and, on close, summary.png.
 
     run.csv columns:
       pi_time, laptop_time, obs_00..obs_<N-1>, act_00..act_05,
@@ -23,7 +23,6 @@ class DataLogger:
         run_dir: str,
         config: dict,
         record: bool,
-        finetune: bool,
         model_hash: str,
         git_hash: str,
         pi_ip: str,
@@ -31,12 +30,9 @@ class DataLogger:
     ):
         os.makedirs(run_dir, exist_ok=True)
         self._run_dir = run_dir
-        self._finetune = finetune
         self._record = record
         self._rows: list = []
-        self._rb_rows: list = []
-        self._prev_obs: np.ndarray = None
-        self._obs_dim = _OBS_DIM_BY_ENV.get(config.get("env_type", "cpg_14d"), 14)
+        self._obs_dim = _OBS_DIM_BY_ENV[config.get("env_type", "cpg_24d")]
         self._action_dim = int(config.get("action_dim", 6))
 
         cfg = {
@@ -47,7 +43,6 @@ class DataLogger:
             "pi_ip": pi_ip,
             "clock_offset_ms": clock_offset_ms,
             "record": record,
-            "finetune": finetune,
             "start_time": time.time(),
         }
         with open(os.path.join(run_dir, "run_config.json"), "w") as f:
@@ -66,18 +61,6 @@ class DataLogger:
         self._run_writer = csv.writer(self._run_f)
         self._run_writer.writerow(self._run_cols)
 
-        if finetune:
-            s_cols = [f"s_{i:02d}" for i in range(self._obs_dim)]
-            sp_cols = [f"sp_{i:02d}" for i in range(self._obs_dim)]
-            a_cols = [f"a_{i:02d}" for i in range(6)]
-            self._rb_cols = s_cols + a_cols + ["reward", "done"] + sp_cols
-            rb_path = os.path.join(run_dir, "replay_buffer.csv")
-            self._rb_f = open(rb_path, "w", newline="")
-            self._rb_writer = csv.writer(self._rb_f)
-            self._rb_writer.writerow(self._rb_cols)
-        else:
-            self._rb_f = None
-            self._rb_writer = None
 
     def log_step(
         self,
@@ -104,23 +87,10 @@ class DataLogger:
         self._run_writer.writerow(row)
         self._rows.append(row)
 
-        if self._rb_writer is not None and self._prev_obs is not None:
-            rb_row = (
-                self._prev_obs.tolist()
-                + action.tolist()
-                + [reward, int(done)]
-                + obs.tolist()
-            )
-            self._rb_writer.writerow(rb_row)
-
-        self._prev_obs = obs.copy()
 
     def close(self):
         self._run_f.flush()
         self._run_f.close()
-        if self._rb_f is not None:
-            self._rb_f.flush()
-            self._rb_f.close()
         self._write_summary_png()
 
     def _write_summary_png(self):

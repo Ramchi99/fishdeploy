@@ -56,7 +56,7 @@ def main():
     lines.append("**Raw data is read-only** — nothing here was written into the "
                  "`runs/.../raw/` folders.\n")
     lines.append("Legend: drops = recorder dropped frames (timing recovered, see "
-                 "`../FRAME_DROP_ANALYSIS.md`); miss% = frames where the fish tag was "
+                 "the troubleshooting table in `deploy/README.md`); miss% = frames where the fish tag was "
                  "not detected (gaps linearly interpolated); ⚠️ marks miss% > "
                  f"{int(MISS*100)}%.\n")
 

@@ -28,6 +28,4 @@ analysis/out/
 # New experiments: fetch_data.sh and unified_test.py write here. Commit a run only if a paper or report reads it.
 data/deploy_runs/
 data/field_logs/
-deploy/recordings/
 deploy/preflight_logs/
-deploy/data/

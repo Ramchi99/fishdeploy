@@ -22,27 +22,28 @@ Controls (during each test)
     r      →  reset frame buffer (fresh ObsAssembler instance)
     q      →  quit
 
-Test sequence
+Test sequence (indices of the deployed 24-D observation, ObsAssemblerCPG24D)
 -------------
  1. Vision Alive       — all 3 tags visible, fps > 20
- 2. Distance           — verify obs[6] matches tape-measured distance
- 3. Fish → Target      — obs[7] (vec_x) < 0,  obs[8] (vec_y) ≈ 0
- 4. Target to LEFT     — obs[8] (vec_y) < 0
- 5. Target to RIGHT    — obs[8] (vec_y) > 0
- 6. Gyro CCW (yaw)     — obs[5] (wz) > 0   [needs Pi sensor]
- 7. Gyro CW  (yaw)     — obs[5] (wz) < 0   [needs Pi sensor]
- 8. Roll right-side    — |obs[3]| (wx) > 0.3  [needs Pi sensor]
- 9. Pitch nose-up      — |obs[4]| (wy) > 0.3  [needs Pi sensor]
+ 2. Distance           — obs[14] (dist of the most recent frame) matches the tape measure
+ 3. Fish → Target      — obs[15] (vec_x) < 0,  obs[16] (vec_y) ≈ 0
+ 4. Target to LEFT     — obs[16] (vec_y) < 0
+ 5. Target to RIGHT    — obs[16] (vec_y) > 0
+ 6. Gyro CCW (yaw)     — obs[3] (wz) > 0   [needs Pi sensor]
+ 7. Gyro CW  (yaw)     — obs[3] (wz) < 0   [needs Pi sensor]
+ 8. Roll / pitch       — not in the observation; read wx, wy on the Pi sensor server
+ 9. Gyro at rest       — obs[3] (wz) ≈ 0   [needs Pi sensor]
 10. Motor centre       — obs[0] ≈ 1, obs[1] ≈ 0  [needs Pi sensor]
 
-MuJoCo body-frame convention (after obs_assembler fix)
--------------------------------------------------------
-  obs[7] vec_x  NEGATIVE when target is directly ahead
+MuJoCo body-frame convention
+----------------------------
+  obs[15] vec_x NEGATIVE when target is directly ahead
                 (fish forward = body −X in MuJoCo)
-  obs[8] vec_y  NEGATIVE when target is to the LEFT
+  obs[16] vec_y NEGATIVE when target is to the LEFT
                 POSITIVE when target is to the RIGHT
-  obs[5] wz     POSITIVE for CCW rotation from above (nose-left)
+  obs[3]  wz    POSITIVE for CCW rotation from above (nose-left)
                 NEGATIVE for CW  rotation from above (nose-right)
+  obs[6..13] are the two older vision frames, obs[18..23] the three past actions.
 
 Human-readable bearing (shown in live stats, NOT sent to policy)
   0°   = target directly ahead
@@ -246,7 +247,7 @@ def _make_tests(dist_holder: list):
 
         # ─────────────────────────────────────────────────────────── test 2 ──
         {
-            "name": "Distance — obs[6]",
+            "name": "Distance — obs[14]",
             "instruction": [
                 "Place the fish at a KNOWN distance from the target.",
                 "Any orientation is fine — only position matters.",
@@ -256,12 +257,12 @@ def _make_tests(dist_holder: list):
             "need_motor": False,
             "checks": [
                 {
-                    "obs_idx":      6,
+                    "obs_idx":      14,
                     "name":         "dist",
                     "expected_str": "≈ measured ± 0.10 m",
                     "check_fn":     lambda obs, e: (
                         dist_holder[0] is not None
-                        and abs(obs[6] - dist_holder[0]) < 0.10
+                        and abs(obs[14] - dist_holder[0]) < 0.10
                     ),
                 },
             ],
@@ -269,83 +270,83 @@ def _make_tests(dist_holder: list):
 
         # ─────────────────────────────────────────────────────────── test 3 ──
         {
-            "name": "Fish nose → Target  (obs[7] < 0, obs[8] ≈ 0)",
+            "name": "Fish nose → Target  (obs[15] < 0, obs[16] ≈ 0)",
             "instruction": [
                 "Point the fish nose DIRECTLY at the target tag.",
                 "Live bearing below should read ≈ 0°.",
                 "",
-                "Why obs[7] < 0: MuJoCo fish forward = body −X.",
+                "Why obs[15] < 0: MuJoCo fish forward = body −X.",
                 "Target directly ahead → vec_x is in the −X direction → negative.",
             ],
             "need_imu":   False,
             "need_motor": False,
             "checks": [
                 {
-                    "obs_idx":      7,
+                    "obs_idx":      15,
                     "name":         "vec_x",
                     "expected_str": "< −0.10  (≈ −dist)",
-                    "check_fn":     lambda obs, e: obs[7] < -0.10,
+                    "check_fn":     lambda obs, e: obs[15] < -0.10,
                 },
                 {
-                    "obs_idx":      8,
+                    "obs_idx":      16,
                     "name":         "vec_y",
                     "expected_str": "≈ 0  (|vy| < 0.15 m)",
-                    "check_fn":     lambda obs, e: abs(obs[8]) < 0.15,
+                    "check_fn":     lambda obs, e: abs(obs[16]) < 0.15,
                 },
             ],
         },
 
         # ─────────────────────────────────────────────────────────── test 4 ──
         {
-            "name": "Target to fish's LEFT  (obs[8] < 0)",
+            "name": "Target to fish's LEFT  (obs[16] < 0)",
             "instruction": [
                 "Rotate the fish so the target is 90° to its LEFT.",
                 "  → Fish nose points away from target, target is on the left side.",
                 "Live bearing below should read ≈ +90°.",
                 "",
-                "Why obs[8] < 0: facing body −X, left = body −Y → vec_y negative.",
+                "Why obs[16] < 0: facing body −X, left = body −Y → vec_y negative.",
             ],
             "need_imu":   False,
             "need_motor": False,
             "checks": [
                 {
-                    "obs_idx":      8,
+                    "obs_idx":      16,
                     "name":         "vec_y",
                     "expected_str": "< −0.05  (target LEFT)",
-                    "check_fn":     lambda obs, e: obs[8] < -0.05,
+                    "check_fn":     lambda obs, e: obs[16] < -0.05,
                 },
                 {
-                    "obs_idx":      7,
+                    "obs_idx":      15,
                     "name":         "vec_x",
                     "expected_str": "≈ 0  (not pointing at it)",
-                    "check_fn":     lambda obs, e: abs(obs[7]) < max(0.30, 0.35 * obs[6]),
+                    "check_fn":     lambda obs, e: abs(obs[15]) < max(0.30, 0.35 * obs[14]),
                 },
             ],
         },
 
         # ─────────────────────────────────────────────────────────── test 5 ──
         {
-            "name": "Target to fish's RIGHT  (obs[8] > 0)",
+            "name": "Target to fish's RIGHT  (obs[16] > 0)",
             "instruction": [
                 "Rotate the fish so the target is 90° to its RIGHT.",
                 "Live bearing below should read ≈ −90°.",
                 "",
-                "Why obs[8] > 0: facing body −X, right = body +Y → vec_y positive.",
+                "Why obs[16] > 0: facing body −X, right = body +Y → vec_y positive.",
             ],
             "need_imu":   False,
             "need_motor": False,
             "checks": [
                 {
-                    "obs_idx":      8,
+                    "obs_idx":      16,
                     "name":         "vec_y",
                     "expected_str": "> +0.05  (target RIGHT)",
-                    "check_fn":     lambda obs, e: obs[8] > 0.05,
+                    "check_fn":     lambda obs, e: obs[16] > 0.05,
                 },
                 {
-                    "obs_idx":      7,
+                    "obs_idx":      15,
                     "name":         "vec_x",
                     "expected_str": "≈ 0  (not pointing at it)",
-                    "check_fn":     lambda obs, e: abs(obs[7]) < max(0.30, 0.35 * obs[6]),
+                    "check_fn":     lambda obs, e: abs(obs[15]) < max(0.30, 0.35 * obs[14]),
                 },
             ],
         },
@@ -551,7 +552,7 @@ def _render(test_idx, n_tests, test, obs, extra, check_results, sensor_ok, tune=
         b    = extra.get("bearing_deg", float("nan"))
         fps  = extra.get("fps", 0.0)
         tags = sorted(extra.get("tags_visible", set()))
-        d    = obs[6] if obs is not None else float("nan")
+        d    = obs[14] if obs is not None else float("nan")
         tune_str = ""
         if tune:
             tune_str = f"  α={tune[0]:.1f} β={tune[1]:.0f} blur={tune[2]}"

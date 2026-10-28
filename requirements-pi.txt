@@ -1,5 +1,6 @@
 # Raspberry Pi 5 side (Debian, Python 3.11, in a venv at ~/fishdeploy/venv)
 numpy
+matplotlib             # summary.png at the end of a run
 dynamixel-sdk          # Dynamixel Protocol 2.0 over /dev/ttyUSB0
 adafruit-blinka        # provides `board` and `busio`
 adafruit-circuitpython-bno055

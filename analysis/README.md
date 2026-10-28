@@ -43,7 +43,7 @@ exist (use `--force` to rebuild, `--only <name>` for one run).
   +x = initial swim direction, +y = fish's left. Matches `render_run.py`'s
   default plotting convention.
 - **Frame-drops:** some long recordings dropped frames (old recorder bottleneck,
-  see `../FRAME_DROP_ANALYSIS.md`). Timing is reconstructed so playback stays
+  see the last row of the troubleshooting table in `../deploy/README.md`). Timing is reconstructed so playback stays
   real-time. Counts are in `RUN_CATALOG.md`.
 - **Detection gaps:** the fish tag is sometimes lost to motion blur; gaps are
   linearly interpolated and any run >10% missed is flagged in the catalog.

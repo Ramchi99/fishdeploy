@@ -72,10 +72,11 @@ _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')
 _DXL_DIR = os.path.join(_REPO_ROOT, 'hardware')
 sys.path.insert(0, _REPO_ROOT)
 sys.path.insert(0, _DXL_DIR)
+from paths import NEW_RUNS
 
 from deploy.pi.imu_reader import ImuReader
 from deploy.pi.motor_runner import MotorRunner, MOTOR_LIMIT_RAD
-from deploy.pi.obs_assembler import ObsAssemblerCPG12D, ObsAssemblerCPG14D, ObsAssemblerCPG24D, VisionState
+from deploy.pi.obs_assembler import ObsAssemblerCPG24D, VisionState
 from deploy.pi.open_loop_logger import OpenLoopLogger
 from deploy.pi.trajectory import make_trajectory
 from deploy.shared.protocol import (
@@ -214,12 +215,8 @@ def main():
     laptop_ip: str = None
     frame_seq_prev = -1
 
-    _assembler_map = {
-        "cpg_14d": ObsAssemblerCPG14D,
-        "cpg_12d": ObsAssemblerCPG12D,
-        "cpg_24d": ObsAssemblerCPG24D,
-    }
-    env_type = config.get("env_type", "cpg_14d")
+    _assembler_map = {"cpg_24d": ObsAssemblerCPG24D}
+    env_type = config.get("env_type", "cpg_24d")
     assembler_cls = _assembler_map.get(env_type)
     if assembler_cls is None:
         raise ValueError(f"Unknown env_type '{env_type}'. Valid: {list(_assembler_map)}")
@@ -252,7 +249,7 @@ def main():
             sys.exit(1)
         time.sleep(0.01)
 
-    data_root = os.path.join(_REPO_ROOT, "deploy", "data")
+    data_root = str(NEW_RUNS)
     git_hash = _git_hash()
     pi_ip_str = socket.gethostbyname(socket.gethostname())
 
@@ -294,7 +291,7 @@ def main():
         time.sleep(0.35)
         motor_runner.rezero()
 
-        run_dir = make_run_dir(data_root, args.name, ts=start_ts)
+        run_dir = os.path.join(make_run_dir(data_root, args.name, ts=start_ts), "raw")
         os.makedirs(run_dir, exist_ok=True)
 
         prev_shadow_omega_raw = 0.0

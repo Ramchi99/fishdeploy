@@ -4,7 +4,7 @@ Hardware RL closed-loop swimming runs (CPG 24-D policy). Every run below has a c
 
 **Raw data is read-only** — nothing here was written into the `runs/.../raw/` folders.
 
-Legend: drops = recorder dropped frames (timing recovered, see `../FRAME_DROP_ANALYSIS.md`); miss% = frames where the fish tag was not detected (gaps linearly interpolated); ⚠️ marks miss% > 10%.
+Legend: drops = recorder dropped frames (timing recovered, see the troubleshooting table in `deploy/README.md`); miss% = frames where the fish tag was not detected (gaps linearly interpolated); ⚠️ marks miss% > 10%.
 
 
 ## Static-target runs

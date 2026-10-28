@@ -2,7 +2,7 @@
 """
 Render a recorded SOFI vision session into a clean, professional trace clip.
 
-A stripped-down sibling of render_run.py / render_roi_explainer.py. There is NO
+A stripped-down sibling of render_run.py. There is NO
 ROI machinery, no dimming mask, no diagnostic panels, no HUD text — just the
 clean camera frame with two overlays:
 
@@ -69,7 +69,7 @@ sys.path.insert(0, _REPO_ROOT)
 
 SETTINGS_FILE = os.path.join(_REPO_ROOT, "deploy", "configs", "camera_settings.json")
 
-# --- pinned 20-May-evening vision tune (matches render_roi_explainer.py) -------
+# --- pinned 20-May-evening vision tune -------
 TUNE_ALPHA    = 0.9
 TUNE_BETA     = -20.0
 TUNE_BLUR     = 3

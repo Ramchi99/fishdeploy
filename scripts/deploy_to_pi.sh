@@ -15,8 +15,10 @@ then
 fi
 
 echo "Deploying to $PI_USER@$PI_HOST:$DEST_DIR..."
-# Excludes only system and git folders to keep environments exactly identical.
+# The Pi needs the code, the policy and the configs, not the measured data or the analysis caches.
 rsync -avz --exclude '.git/' \
+           --exclude 'data/' \
+           --exclude 'analysis/' \
            --exclude '__pycache__/' \
            --exclude '*.mp4' \
            --exclude '*.avi' \

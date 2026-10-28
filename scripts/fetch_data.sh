@@ -1,6 +1,7 @@
 #!/bin/bash
-# Smartly syncs ONLY data/plots from the Raspberry Pi back to the PC.
-# It places the data exactly in the same folder structure they were generated in.
+# Pulls a run back from the Raspberry Pi into data/deploy_runs/<run>/raw/ and post-processes it.
+#   ./scripts/fetch_data.sh rl <run_name>      one deployment run (vision_streamer.py calls this on DONE)
+#   ./scripts/fetch_data.sh                    every csv/json/png/... under ~/fishdeploy on the Pi (sysid logs)
 
 cd "$(dirname "$0")/.."
 
@@ -26,24 +27,17 @@ if [ "$1" = "rl" ]; then
     RAW_DEST="./data/deploy_runs/${RUN_NAME}/raw"
     mkdir -p "$RAW_DEST"
 
-    echo "Fetching Pi:deploy/data/${RUN_NAME}/ → data/deploy_runs/${RUN_NAME}/raw/ ..."
+    # The Pi writes run.csv + run_config.json into the same folder the laptop wrote video.avi +
+    # frame_timestamps.csv into (both sides name the run by the START timestamp), so one rsync merges them.
+    echo "Fetching Pi:data/deploy_runs/${RUN_NAME}/raw/ → ${RAW_DEST}/ ..."
     rsync -avz --prune-empty-dirs \
                --include="*/" \
                --include="*.csv" \
                --include="*.json" \
                --exclude="*" \
-               "$PI_USER@$PI_HOST:~/fishdeploy/deploy/data/$RUN_NAME/" \
+               "$PI_USER@$PI_HOST:~/fishdeploy/data/deploy_runs/$RUN_NAME/raw/" \
                "$RAW_DEST/" \
     || { echo "ERROR: rsync failed (exit $?). Aborting."; exit 1; }
-
-    # Move recording files from recordings/ if present
-    REC_DIR="./deploy/recordings/${RUN_NAME}"
-    if [ -d "$REC_DIR" ]; then
-        echo "Moving recording from $REC_DIR → $RAW_DEST/"
-        [ -f "$REC_DIR/video.avi" ] && mv "$REC_DIR/video.avi" "$RAW_DEST/"
-        [ -f "$REC_DIR/frame_timestamps.csv" ] && mv "$REC_DIR/frame_timestamps.csv" "$RAW_DEST/"
-        rmdir "$REC_DIR" 2>/dev/null || true
-    fi
 
     # Use mujoco conda env python if available (has matplotlib etc.), else fall back
     PYTHON_BIN="${HOME}/micromamba/envs/mujoco/bin/python3"

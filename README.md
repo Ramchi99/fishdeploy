@@ -103,10 +103,11 @@ python3 deploy/pi/deploy_main.py --name run_1 --env-config deploy/configs/cpg_24
 ```
 
 The Pi calibrates the gyro (fish must be still), waits for the first pose packet and reports READY. Press R
-in the laptop window to start and R again to stop; the laptop then pulls the Pi log and runs
-`deploy/laptop/post_run.py`, and the run lands in `data/deploy_runs/<timestamp>_<name>/{raw,processed}`.
-`deploy/README.md` is the complete reference: workflows (open loop, shadow, noise floor, RL), the Pi setup,
-every flag, and why inference must be stochastic. `deploy/obs_verify/` walks through the ten physical checks
+in the laptop window to start and R again to stop. Both machines write into
+`data/deploy_runs/<timestamp>_<name>/raw/` (the laptop's START timestamp names the run on both sides); the laptop
+then pulls the Pi's half and runs `deploy/laptop/post_run.py`, which writes `processed/`.
+`deploy/README.md` is the complete reference: the three workflows (deployment, open loop with an optional shadow
+policy, noise floor), the Pi setup, every flag, the IMU axes, and why inference must be stochastic. `deploy/obs_verify/` walks through the ten physical checks
 that each observation dimension matches the simulator before a water run.
 
 The 43 runs of 2026-05-20 in `data/02_deploy_20260520/` are the paper's deployment set (static, disturbance, out-of-distribution,

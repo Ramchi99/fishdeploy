@@ -38,6 +38,7 @@ os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
 
 _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.insert(0, _REPO_ROOT)
+from paths import NEW_RUNS   # data/deploy_runs/<run>/raw, the same folder the Pi writes its run.csv into
 
 from deploy.shared.protocol import (
     PACKET_SIZE, POSE_PORT, SYNC_PORT, CTRL_PORT,
@@ -289,7 +290,7 @@ def _run_ctrl_listener(ctrl_port: int, stop_event: threading.Event, state: dict)
 def _start_recording(name: str, fps: float, width: int, height: int):
     ts_str = time.strftime("%Y%m%d_%H%M%S")
     folder_name = f"{ts_str}_{name}" if name else ts_str
-    session_dir = os.path.join(_REPO_ROOT, "deploy", "recordings", folder_name)
+    session_dir = os.path.join(NEW_RUNS, folder_name, "raw")
     os.makedirs(session_dir, exist_ok=True)
     recorder = AsyncVideoRecorder(
         os.path.join(session_dir, "video.avi"),
@@ -307,7 +308,6 @@ def main():
     parser.add_argument("--camera", default=None, help="Camera profile from vision_settings.json")
     parser.add_argument("--device", type=int, default=0, help="USB camera device index")
     parser.add_argument("--no_preview", action="store_true", help="Disable preview window entirely (max fps, headless)")
-    parser.add_argument("--live_plot", action="store_true", help="Live diagnostic plots (vector, distance, speed)")
     parser.add_argument("--record_old", action="store_true", help="Record video + frame timestamps (starts immediately)")
     parser.add_argument("--record", action="store_true", help="Toggleable recording — press R in preview window to start/stop")
     parser.add_argument("--name", default=None, help="Fallback session name if Pi does not send one (normally not needed)")
@@ -347,12 +347,6 @@ def main():
     target_id = tag_ids["target"]
 
     plotter = None
-    if args.live_plot:
-        from live_plotter import LivePlotter
-        plotter = LivePlotter()
-        plotter.start()
-        print("[VisionStreamer] Live plots started.")
-
     mtx, dist, cam_params = load_camera_params(SETTINGS_FILE, args.camera)
 
     udp_sock = None
@@ -566,7 +560,7 @@ def main():
                 _run_name = _ctrl_state.get('pi_name') or args.name or ''
                 run_folder = f"{ts_str}_{_run_name}" if _run_name else ts_str
                 _current_run_folder = run_folder
-                session_dir = os.path.join(_REPO_ROOT, "deploy", "recordings", run_folder)
+                session_dir = os.path.join(NEW_RUNS, run_folder, "raw")
                 os.makedirs(session_dir, exist_ok=True)
                 recorder = AsyncVideoRecorder(
                     os.path.join(session_dir, "video.avi"),
@@ -641,7 +635,7 @@ def main():
                         _run_name = _ctrl_state.get('pi_name') or args.name or ''
                         run_folder = f"{ts_str}_{_run_name}" if _run_name else ts_str
                         _current_run_folder = run_folder
-                        session_dir = os.path.join(_REPO_ROOT, "deploy", "recordings", run_folder)
+                        session_dir = os.path.join(NEW_RUNS, run_folder, "raw")
                         os.makedirs(session_dir, exist_ok=True)
                         recorder = AsyncVideoRecorder(
                             os.path.join(session_dir, "video.avi"),

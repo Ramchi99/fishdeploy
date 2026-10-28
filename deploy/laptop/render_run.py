@@ -9,7 +9,7 @@ Output: <session>/replay.mp4  (VFR — exact real-time playback from timestamps)
 
 Usage:
     python deploy/laptop/render_run.py \
-        --session deploy/recordings/20260506_123456 \
+        --session data/deploy_runs/20260506_123456_<name>/raw \
         --env-config deploy/configs/cpg_24d.json \
         --tag_size 0.080
 """
@@ -45,7 +45,7 @@ PLOT_W   = 960
 PLOT_H   = 540
 CAM_H    = 540
 WINDOW_S = 7.0
-ALPHA    = 0.25  # matches ObsAssemblerCPG14D._EWM_ALPHA
+ALPHA    = 0.25  # EWM smoothing of the overlay, as the earlier assemblers used
 
 
 def load_camera_params(settings_file, camera_name=None):

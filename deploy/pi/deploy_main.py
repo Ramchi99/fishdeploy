@@ -7,7 +7,7 @@ Usage (on Pi, from fishdeploy/ repo root):
         --env-config deploy/configs/cpg_24d.json \
         --model policies/sofi_cpg_rl_policy.zip \
         --duration 60 \
-        [--record] [--finetune]
+        [--record]
 """
 import argparse
 import hashlib
@@ -29,12 +29,13 @@ _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')
 _DXL_DIR = os.path.join(_REPO_ROOT, 'hardware')
 sys.path.insert(0, _REPO_ROOT)
 sys.path.insert(0, _DXL_DIR)
+from paths import NEW_RUNS   # data/deploy_runs, the same path on the Pi and on the laptop
 
 from deploy.pi.cpg_oscillator import CPGOscillator
 from deploy.pi.data_logger import DataLogger
 from deploy.pi.imu_reader import ImuReader
 from deploy.pi.motor_runner import MotorRunner
-from deploy.pi.obs_assembler import ObsAssemblerCPG12D, ObsAssemblerCPG14D, ObsAssemblerCPG24D, ObsAssemblerDA40D, VisionState
+from deploy.pi.obs_assembler import ObsAssemblerCPG24D, VisionState
 from deploy.pi.policy_runner import PolicyRunner
 from deploy.shared.protocol import (
     PACKET_SIZE, POSE_PORT, SYNC_PORT, CTRL_PORT,
@@ -144,7 +145,6 @@ def main():
     parser.add_argument("--model", required=True)
     parser.add_argument("--duration", type=float, default=60.0)
     parser.add_argument("--record", action="store_true")
-    parser.add_argument("--finetune", action="store_true")
     args = parser.parse_args()
 
     with open(args.env_config) as f:
@@ -174,13 +174,8 @@ def main():
 
     policy = PolicyRunner(args.model)
     cpg = CPGOscillator(dt_phys=DT, tau=CPG_TAU, motor_limit=MOTOR_LIMIT)
-    _assembler_map = {
-        "cpg_14d": ObsAssemblerCPG14D,
-        "cpg_12d": ObsAssemblerCPG12D,
-        "cpg_24d": ObsAssemblerCPG24D,
-        "da_rl_policy_40d": ObsAssemblerDA40D,
-    }
-    env_type = config.get("env_type", "cpg_14d")
+    _assembler_map = {"cpg_24d": ObsAssemblerCPG24D}          # the deployed policy's observation
+    env_type = config.get("env_type", "cpg_24d")
     assembler_cls = _assembler_map.get(env_type)
     if assembler_cls is None:
         raise ValueError(f"Unknown env_type '{env_type}'. Valid: {list(_assembler_map)}")
@@ -265,7 +260,7 @@ def main():
         time.sleep(0.01)
 
     # Multi-run loop
-    data_root = os.path.join(_REPO_ROOT, "deploy", "data")
+    data_root = str(NEW_RUNS)
     model_hash = _model_hash(args.model)
     git_hash = _git_hash()
     pi_ip_str = socket.gethostbyname(socket.gethostname())
@@ -338,7 +333,7 @@ def main():
         else:
             print("[Deploy] WARNING: no fresh vision during warmup — starting anyway.", flush=True)
 
-        run_dir = make_run_dir(data_root, args.name, ts=start_ts)
+        run_dir = os.path.join(make_run_dir(data_root, args.name, ts=start_ts), "raw")
         os.makedirs(run_dir, exist_ok=True)
         print(f"[Deploy] Run dir: {run_dir}")
 
@@ -350,7 +345,6 @@ def main():
             run_dir=run_dir,
             config=config,
             record=args.record,
-            finetune=args.finetune,
             model_hash=model_hash,
             git_hash=git_hash,
             pi_ip=pi_ip_str,
