@@ -11,6 +11,7 @@ whose folders mirror the paths below. `SHA256SUMS` in the archive verifies a dow
 |---|---|---|---|---|
 | `field_test/data/20260401_first_swim/run_<n>_<f>Hz_<amp>mm[_<offset>mm]/raw/*.csv` | 12 | The Pi's motor + IMU log of each open-loop run | `field_test/unified_test.py` | `field_test/pipeline/01…03` |
 | `…/processed/02_clean_path.csv` | 12 | AprilTag pose track in the world frame | `field_test/pipeline/02_process_swimming.py` | `03_prep_field2sim.py`, `04_plot_field_test.py` |
+| `…/processed/02_fish_log_trimmed.csv` | 12 | The Pi log cut to the video window, on the synced clock | `field_test/pipeline/02_process_swimming.py` | `03_prep_field2sim.py`, fishsim `sysid/motor/` |
 | `…/processed/03_field2sim_ready.csv` | 12 | Resampled pose + motor + IMU on one timeline | `field_test/pipeline/03_prep_field2sim.py` | fishsim `sysid/fluid/opt_field2sim.py` (Table I), paper Fig. 5, Fig. 9 |
 | `deploy/runs/20260520_<hhmmss>_<name>/raw/run.csv` | 43 | Pi log at 50 Hz: observation, action, CPG parameters and phase, motor state, pose age | `deploy/pi/deploy_main.py` | paper Fig. 6 (`full_success_2`), Fig. 9 (all 43), appendix run table, `analysis/` |
 | `…/raw/run_config.json`, `frame_timestamps.csv` | 43 + 43 | Env config, policy hash, clock offset; camera frame times | `deploy_main.py`, `deploy/laptop/vision_streamer.py` | `analysis/build_analysis.py` |
