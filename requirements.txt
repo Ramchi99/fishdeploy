@@ -1,0 +1,12 @@
+# Laptop side: vision streaming, post-processing, analysis (Python 3.11)
+numpy
+pandas
+scipy
+matplotlib
+opencv-python
+pupil-apriltags        # overhead-camera AprilTag detection (deploy/laptop, analysis)
+dt-apriltags           # field-test pipeline detector (field_test/pipeline)
+stable-baselines3      # only to inspect policies on the laptop
+torch
+tqdm
+pytest

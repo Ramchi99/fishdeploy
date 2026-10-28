@@ -1,0 +1,63 @@
+{
+    "cameras": {
+        "simonPhone": {
+            "camera_params": [1310.2855, 1309.6065, 945.3191, 556.5011],
+            "dist_coeffs": [0.073777, -0.175439, 0.000364, -0.000385, 0.172067]
+        },
+        "overhead": {
+            "camera_params": [1055.0202, 1054.2105, 945.8357, 489.0351],
+            "dist_coeffs": [0.04005568567002925, -0.06156872334825811, 0.0004671519497626686, -7.354326849815997e-05, 0.024268470439477476]
+        }
+    },
+    "default": {
+        "alpha": 0.4,
+        "beta": -45,
+        "blur": 7,
+        "decimate": 1.0,
+        "camera": "simonPhone"
+    },
+    "run_1_1.0Hz_5.0mm": {
+        "alpha": 0.4,
+        "beta": -45,
+        "blur": 7,
+        "decimate": 1.0
+    },
+    "run_2_2.0Hz_5.0mm": {
+        "alpha": 0.3,
+        "beta": -47,
+        "blur": 3,
+        "decimate": 1.0
+    },
+    "run_3_1.0Hz_9.0mm": {
+        "alpha": 0.4,
+        "beta": -47,
+        "blur": 5,
+        "decimate": 1.0
+    },
+    "run_4_2.0Hz_9.0mm": {
+        "alpha": 0.4,
+        "beta": -45,
+        "blur": 7,
+        "decimate": 1.0
+    },
+    "run_5_1.0Hz_7.0mm": {
+        "alpha": 0.4,
+        "beta": -45,
+        "blur": 7,
+        "decimate": 1.0
+    },
+    "run_7_3.0Hz_7.0mm": {
+        "alpha": 0.3,
+        "beta": -42,
+        "blur": 3,
+        "decimate": 1.0,
+        "drop_yaw_rows": [1, 2],
+        "drop_position_rows": [87, 92, 96]
+    },
+    "run_9_2.0Hz_6.0mm_-3.0mm": {
+        "alpha": 0.4,
+        "beta": -47,
+        "blur": 1,
+        "decimate": 1.0
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "env_type": "cpg_24d",
+  "obs_dim": 24,
+  "action_dim": 6,
+  "action_type": "cpg",
+  "action_history_len": 0,
+  "motor_obs_history_len": 0,
+  "model_path": "policies/sofi_cpg_rl_policy.zip",
+  "control_freq_hz": 50,
+  "vision_stale_warn_ms": 100,
+  "vision_stale_stop_ms": 500,
+  "tag_ids": {"fish": 0, "anchor": 1, "target": 2},
+  "tag0_to_com_offset": [0.015, 0.0],
+  "tag1_world_pos": [0.0, 0.0]
+}

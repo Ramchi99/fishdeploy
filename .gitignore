@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.vscode/
+.claude/
+CLAUDE.md
+
+# Recordings and renders are never committed; the paper's runs live in the archive (see DATA.md)
+*.avi
+*.mp4
+*.mov
+*.jpg
+*.jpeg
+
+# New experiment output lands here. The 43 paper runs and the 12 field runs are committed on purpose;
+# add a new run with `git add -f` only if a paper or report reads it.
+deploy/runs/
+deploy/recordings/
+deploy/preflight_logs/
+field_test/data/
+field_test/plots/
+analysis/out/
+analysis/videos/
+analysis/strobe_plots/
+analysis/tag_pipeline_frames/
+analysis/strobe_editor/
+sysid/*/plots/
+*.png
+!analysis/report_strobes/*.png

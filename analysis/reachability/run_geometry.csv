@@ -1,0 +1,31 @@
+run,group,outcome,radius_m,angle_deg,min_dist_m,fish_miss_pct,note
+insane_run_3,disturbance,success,2.040,-47.7,0.002,10.4,initial rotational velocity
+insane_run_6,disturbance,success,2.139,-34.2,0.185,15.1,fluid disturbance
+insane_run_8,disturbance,success,2.048,-9.4,0.015,14.7,heavy fluid disturbance
+insane_run_4,disturbance,success,2.174,-5.1,0.039,17.6,slight stick disturbance
+insane_run_5,disturbance,success,2.186,0.6,0.084,14.1,heavy stick disturbance
+insane_run_2,disturbance,success,1.737,38.7,0.047,3.1,initial backward velocity; has frame drops
+insane_run_7,disturbance,success,1.640,42.1,0.031,12.8,fluid disturbance
+insane_run_1,disturbance,fail,1.746,71.8,1.740,16.1,initial backward velocity
+finetune_run_6,static,success,1.488,-175.2,0.016,3.5,target out-of-distribution (behind)
+full_success_3,static,success,1.708,-83.9,0.017,4.0,has frame drops
+finetune_run_1,static,success,2.789,-83.3,0.023,7.0,
+finetune_run_4,static,success,2.139,-83.3,0.246,2.9,heavy frame drops (~50%)
+crazy_run_4,static,success,2.120,-65.2,0.017,17.2,
+finetune_run_5,static,success,2.824,-48.6,0.064,11.0,
+hope_didnt_work_2,static,success,1.613,-32.6,0.045,9.4,FIRST EVER successful RL run
+full_success_1,static,success,1.875,4.5,0.045,23.4,
+hope_didnt_work_5,static,success,1.800,10.2,0.060,4.2,has frame drops
+polaris_2,static,success,1.902,21.0,0.008,22.9,
+hope_didnt_work_6,static,success,1.764,34.1,0.026,10.0,
+crazy_run_5,static,success,1.961,50.7,0.026,15.2,
+full_success_2,static,success,1.794,72.3,0.023,6.2,
+finetune_run_7,static,success,1.734,157.9,0.021,7.3,target out-of-distribution (behind)
+finetune_run_9,static,fail,0.955,-109.9,0.725,0.0,heavy frame drops (~48%)
+hope_didnt_work_3,static,fail,1.755,57.0,1.410,21.8,
+crazy_run_1,static,fail,1.715,59.3,0.685,21.4,
+crazy_run_3,static,fail,1.718,63.0,0.860,21.8,
+finetune_run_2,static,fail,3.154,66.3,1.461,5.1,target moved by hand at the end
+finetune_run_10,static,fail,0.934,98.5,0.922,14.4,
+finetune_run_3,static,fail,2.590,103.2,2.583,25.7,
+finetune_run_8,static,fail,1.664,112.2,1.656,1.5,

@@ -1,0 +1,11 @@
+{
+  "env_type": "cpg_24d",
+  "model_path": "rl_deploy/policy/SAC_curriculum_stage0_fwd_wide.zip",
+  "model_hash": "7bbe08b8",
+  "git_hash": "unknown",
+  "pi_ip": "127.0.1.1",
+  "clock_offset_ms": 360.29720306396484,
+  "record": true,
+  "finetune": false,
+  "start_time": 1779291358.6260512
+}

@@ -1,0 +1,8 @@
+# Raspberry Pi 5 side (Debian, Python 3.11, in a venv at ~/fishdeploy/venv)
+numpy
+dynamixel-sdk          # Dynamixel Protocol 2.0 over /dev/ttyUSB0
+adafruit-blinka        # provides `board` and `busio`
+adafruit-circuitpython-bno055
+smbus2
+stable-baselines3      # SAC inference (CPU)
+torch                  # CPU wheel
