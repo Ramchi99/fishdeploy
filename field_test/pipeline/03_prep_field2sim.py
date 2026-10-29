@@ -196,7 +196,7 @@ def prep_field2sim(run_dir, pulley_radius=0.0175, yaw_source='vision', yaw_blend
         if m:
             freq_hz  = float(m.group(1))
             amp_mm   = float(m.group(2))
-            # Run-name mm was computed with r=12.5mm (unified_test.py default),
+            # Run-name mm was computed with r=12.5mm (openloop_swim.py default),
             # so convert ticks → rad via the same 12.5mm radius, not pulley_radius.
             FIELD_RADIUS_M = 0.0125
             amp_rad  = (amp_mm / 1000.0) / FIELD_RADIUS_M

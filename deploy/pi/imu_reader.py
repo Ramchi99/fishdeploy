@@ -12,7 +12,7 @@ class ImuReader:
 
     Axis remap — BulkheadFixed (conf=0x12, sign=0x06):
       The raw adafruit gyro tuple is (physical_X, physical_Y, physical_Z).
-      We apply the same remap that field_test/unified_test.py writes to BNO055
+      We apply the same remap that field_test/openloop_swim.py writes to BNO055
       registers 0x41/0x42, but in software here so the IMUPLUS sensor mode is
       preserved (hardware remap requires CONFIG_MODE which resets fusion state).
 

@@ -18,7 +18,7 @@ and validated on 01, 02, 05, 06, 08, 12 (run 02 was nudged by hand).
 
 | File per run | What | Produced by | Read by |
 |---|---|---|---|
-| `raw/<timestamp>_first_swim_<f>Hz_<amp>mm.csv` | the Pi's motor + IMU log | `field_test/unified_test.py` | `field_test/pipeline/01…02` |
+| `raw/<timestamp>_first_swim_<f>Hz_<amp>mm.csv` | the Pi's motor + IMU log | `field_test/openloop_swim.py` | `field_test/pipeline/01…02` |
 | `processed/02_fish_log_trimmed.csv` | that log cut to the video window, on the synced clock | `field_test/pipeline/02_process_swimming.py` | `03_prep_field2sim.py` |
 | `processed/02_clean_path.csv` | the AprilTag pose track in the world frame | `02_process_swimming.py` | `03_prep_field2sim.py`, `04_plot_field_test.py` |
 | `processed/03_field2sim_ready.csv` | pose, motor and IMU resampled to one timeline | `03_prep_field2sim.py` | fishsim `sysid/fluid/opt_field2sim.py` (Table I), paper Fig. 5, Fig. 9, the motor fit |
@@ -55,7 +55,7 @@ In the archive only: `<run>/raw/video.avi`, `<run>/processed/*.png`, `analysis/v
 |---|---|---|---|
 | `tail_benchmark/air/` | 100 motor sweeps with the tail in air (`20260320_*_r17.5_d{05,07,09}_Benchmark_air_<f>Hz_<amp>Amp.csv`: commanded and measured position, velocity, load) | `sysid/tail/run_dynamic_benchmark.py --env air` | fishsim `sysid/tail_stiffness/step1_stiffness.py` (hinge stiffness and damping, paper Fig. 4) |
 | `tail_benchmark/stiffness/` | 10 static stiffness ramps | `sysid/tail/calibrate_stiffness.py` | `sysid/tail/plot_stiffness.py` |
-| `imu_noise/` | two BNO055 logs with the fish still | `sysid/imu/log_9dof.py` | `sysid/imu/analyze_imu.py` |
+| `imu_noise/` | two BNO055 logs with the fish still (9-DOF mode) | `sysid/imu/log_imu.py --mode 9dof` | `sysid/imu/analyze_imu.py` |
 | `sensor_noise_20260507/` | the sensor-noise measurement behind the training noise model: a 30 s shadow run with the motor silent and the fish still (`raw/run.csv` at 50 Hz, 14-D observation of the May policy, `run_config.json`, `frame_timestamps.csv`), and `processed/noise_config.json` + `noise_report.md` | `deploy/pi/open_loop_main.py --trajectory zero` with the laptop streamer; `deploy/laptop/post_run.py` regenerates `processed/` identically | fishsim `rl/models/sensor_model.py` took its per-channel noise from it |
 
 In the archive only: the 108 water sweeps and the 60 r12.5 air sweeps (`sysid/tail/compare_air_water.py`

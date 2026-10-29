@@ -24,7 +24,9 @@ def main():
     args = parser.parse_args()
 
     # Load all relevant files matching dataset and env
-    search_pattern = os.path.join(str(TAIL_BENCH / args.env), f"*_{args.dataset}_Benchmark_{args.env}_*.csv")
+    # file names: <date>_<dataset>_Benchmark_<env>_<f>Hz_<amp>Amp.csv; the March 2026 sweeps carry a `_d<travel>` token
+    # after the dataset (`20260320_*_r17.5_d05_Benchmark_air_1.0Hz_60.0Amp.csv`), hence the second wildcard
+    search_pattern = os.path.join(str(TAIL_BENCH / args.env), f"*_{args.dataset}_*Benchmark_{args.env}_*.csv")
     files = glob.glob(search_pattern)
     
     # Also support older format for backward compatibility if dataset wasn't used
@@ -146,7 +148,8 @@ def main():
     
     # 3. Torque Saturation Heatmap
     ax = axs[1,0]
-    pivot_load = df.pivot(index='Freq', columns='CmdAmpFrac', values='MaxLoad')
+    # pivot_table: a grid point measured twice (the d05.0 set repeats the sweep) is averaged instead of raising
+    pivot_load = df.pivot_table(index='Freq', columns='CmdAmpFrac', values='MaxLoad', aggfunc='mean')
     if not pivot_load.empty:
         cax = ax.matshow(pivot_load.values, cmap='Reds', aspect='auto', vmin=0, vmax=1000)
         fig.colorbar(cax, ax=ax, label='Peak Torque (mA)')
@@ -188,14 +191,14 @@ def main():
     axs[2,1].axis('off')
     
     plt.tight_layout()
-    plots_dir = os.path.join("plots", "dynamic")
+    plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plots", "dynamic")   # sysid/tail/plots, gitignored
     os.makedirs(plots_dir, exist_ok=True)
     
     filename = f"{args.dataset}_Dynamic_Benchmark_{args.env.upper()}"
     fig.savefig(os.path.join(plots_dir, f"{filename}.png"), dpi=300)
     fig.savefig(os.path.join(plots_dir, f"{filename}.pdf"))
     
-    print(f"\nAnalysis complete! Dashboard saved to: plots/dynamic/{filename}.png")
+    print(f"\nAnalysis complete! Dashboard saved to: {plots_dir}/{filename}.png")
 
 if __name__ == "__main__":
     main()

@@ -25,8 +25,8 @@ simulation, the model fits, the training code and the paper figures are in
 |---|---|
 | `data/` | The measured data the paper reads, in the folder names of the public archive: the 12 open-loop field runs, the deployment runs of 2026-05-20 with the analysis caches and the curated closed-loop segments, the bench sweeps. `data/README.md` says for every file what produced it and what reads it |
 | `hardware/` | Dynamixel wrappers (`dxlSetup/`), IMU reader, UPS/battery monitor, single-motor test scripts |
-| `sysid/` | Measurement scripts: tail benchmark sweeps in air and water (`tail/`), IMU noise logs (`imu/`), encoder noise (`motor_noise/`), the IMU axis check |
-| `field_test/` | Open-loop swimming runs: `unified_test.py` on the Pi, the laptop pipeline `pipeline/01…04` (video sync, AprilTag pose, resampling to `03_field2sim_ready.csv`, plots), camera calibration, cross-run evaluation |
+| `sysid/` | Measurement scripts: the tail benchmark (`tail/`: stiffness ramp, frequency sweeps in air and water), the IMU noise log (`imu/`), the IMU axis check; `sysid/README.md` is the protocol |
+| `field_test/` | Open-loop swimming runs: `openloop_swim.py` on the Pi, the laptop pipeline `pipeline/01…04` (video sync, AprilTag pose, resampling to `03_field2sim_ready.csv`, plots), camera calibration, cross-run evaluation |
 | `deploy/` | Closed-loop deployment: `pi/` (policy, CPG, motor, IMU, logger), `laptop/` (vision streamer, post-run analysis, renders), `shared/` (UDP protocol, tag tracker), `configs/`, `preflight.py`, `obs_verify/` |
 | `analysis/` | The post-session analysis of the deployment runs: tag re-detection, trajectory caches, reachability tables, strobe composites, trace videos; `canonical/`: the conversion of curated segments into the 1 kHz CSVs the closed-loop fits read |
 | `policies/` | The deployed SAC policy (md5 `7bbe08b8`) |
@@ -62,19 +62,19 @@ python3 sysid/tail/run_dynamic_benchmark.py --env air --pulley_radius 17.5 --dat
 # the same sweep with the tail in water
 python3 sysid/tail/run_dynamic_benchmark.py --env water --pulley_radius 17.5 --dataset r17.5
 # Pi, fish still: IMU noise log
-python3 sysid/imu/log_9dof.py
+python3 sysid/imu/log_imu.py --mode 9dof
 ```
 
 The sweeps write `data/03_sysid/tail_benchmark/<env>/<date>_<set>_r<radius>_d<amplitude>_Benchmark_<env>_<f>Hz_<amp>Amp.csv`.
 The 100 files `20260320_*_r17.5_*_Benchmark_air_*` are the input of the tail-stiffness fit in fishsim
-(`sysid/tail_stiffness/step1_stiffness.py`, paper Fig. 4). `sysid/tail/README.md` has the full protocol;
+(`sysid/tail_stiffness/step1_stiffness.py`, paper Fig. 4). `sysid/README.md` has the full protocol;
 `sysid/tail/analyze_dynamic_benchmark.py` plots the Bode curves on the laptop.
 
 ## 2. Open-loop field test (collect the data the fluid model is fitted on)
 
 ```bash
 # Pi, fish in the pool, phone filming from above
-python3 field_test/unified_test.py --name first_swim --freq 2.0 --amp 9.0 --duration 30.0
+python3 field_test/openloop_swim.py --name first_swim --freq 2.0 --amp 9.0 --duration 30.0
 # laptop, after copying the phone video and the Pi CSV into data/<session>/<run>/raw/
 python3 field_test/pipeline/01_sync_and_convert.py     # phone clock → Unix time via the reference frame
 python3 field_test/pipeline/02_process_swimming.py     # AprilTag → gravity-aligned 6-DOF pose
@@ -85,7 +85,7 @@ python3 field_test/pipeline/04_plot_field_test.py
 The twelve runs of 2026-04-01 (1 to 4 Hz, 5 to 12 mm, two with a turn offset) are in
 `data/01_field_openloop_20260401/`. Their `03_field2sim_ready.csv` files are what fishsim's
 `sysid/fluid/opt_field2sim.py` fits the 15 fluid coefficients to (paper Fig. 5, Table I) and what paper Fig. 9
-reads. Camera calibration and the per-run vision settings: `field_test/CALIBRATION.md`, `field_test/vision_settings.json`.
+reads. Camera calibration, the phone clock offset and the per-run vision settings: `field_test/README.md`, `field_test/vision_settings.json`.
 
 ## 3. Deployment (the policy drives the fish)
 

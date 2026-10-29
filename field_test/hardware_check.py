@@ -32,7 +32,7 @@ except ImportError:
 
 try:
     import smbus
-    from hardware.battery_check.UPS_sample1 import INA219
+    from hardware.battery_check.ina219 import INA219
     BATTERY_AVAILABLE = True
 except ImportError:
     BATTERY_AVAILABLE = False

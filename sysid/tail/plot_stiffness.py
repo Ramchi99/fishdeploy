@@ -89,7 +89,7 @@ def main():
     
     plt.tight_layout()
     
-    plots_dir = os.path.join("plots", "stiffness")
+    plots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plots", "stiffness")   # sysid/tail/plots, gitignored
     os.makedirs(plots_dir, exist_ok=True)
     filename_only = os.path.basename(file_path).replace(".csv", "")
     

@@ -23,7 +23,8 @@ IMU_NOISE = DATA / "03_sysid" / "imu_noise"
 
 POLICIES = REPO / "policies"
 NEW_RUNS = DATA / "deploy_runs"                          # where scripts/fetch_data.sh puts new deployment runs
-NEW_FIELD = DATA / "field_runs"                          # where field_test/unified_test.py and the pipeline put new sessions
+NEW_FIELD = DATA / "field_runs"                          # where new open-loop sessions go: <session>/run_*/raw/ for the pipeline
+FIELD_LOGS = DATA / "field_logs"                         # where field_test/openloop_swim.py writes its log on the Pi
 
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))

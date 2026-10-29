@@ -9,16 +9,13 @@ import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(os.path.dir
 from paths import DATA  # noqa: E402
 
 # --- CONFIGURATION ---
-CALIB_FILE = "field_test/CALIBRATION.md"
+# The phone logs video frames and IMU in nanoseconds since its boot; the Pi logs Unix time. BOOT_OFFSET is the
+# Unix time of the phone's boot (62 ADB snapshots of `date +%s.%N; cat /proc/uptime` over 24 h, std 7 ms,
+# drift 1 ms/day). It is a constant as long as the phone is not rebooted; re-measure after a reboot
+# (see field_test/README.md).
 BOOT_OFFSET = 1774262813.4894
 
 def get_offset():
-    if os.path.exists(CALIB_FILE):
-        with open(CALIB_FILE, 'r') as f:
-            content = f.read()
-            match = re.search(r'Value: `([\d\.]+)`', content)
-            if match:
-                return float(match.group(1))
     return BOOT_OFFSET
 
 def find_anchor(video_path, image_paths):

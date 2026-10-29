@@ -1,47 +1,62 @@
-# Sofi Robotic Fish - Field Test Suite
+# field_test: the open-loop swimming runs
 
-This folder contains the unified testing and logging environment for the Sofi robotic fish. The primary tool is `unified_test.py`, designed for high-performance data collection during water trials.
+The fish swims a fixed sine stroke on its own, a phone films from above, and the laptop pipeline turns the
+two recordings into one CSV per run that the fluid identification in fishsim reads. Nothing is sent over the
+network during a run: the Pi script is started over SSH and logs locally, the phone records video and its
+own IMU, and the two clocks are aligned afterwards. The twelve runs of 2026-04-01 are in
+`data/01_field_openloop_20260401/`, with the pipeline's outputs in each run's `processed/`.
 
-## 🚀 Quick Start
+## 1. On the Pi: run the stroke
 
-Run a basic 1Hz, 5mm amplitude test for 10 seconds:
 ```bash
-python3 field_test/unified_test.py --name "first_swim" --freq 1.0 --amp 5.0 --duration 10.0
+python3 field_test/openloop_swim.py --name first_swim --freq 2.0 --amp 9.0 --duration 30.0
 ```
 
-Run with full 9-DOF IMU (Magnetometer ON) and custom PID gains:
+`--freq` (Hz), `--amp` (peak-to-peak tendon travel, mm), `--offset` (mm, a turn bias), `--duration` (s),
+`--p` (Dynamixel P gain, 800), `--rate` (log rate, 100 Hz), `--radius` (pulley, 12.5 mm by default: the
+twelve runs were commanded with this value, so a "9 mm" run is 12.6 mm of travel at the real 17.5 mm pulley;
+the pipeline converts), `--imu-mode 6dof|9dof`, `--skip-calib`. The script waits for the IMU calibration,
+runs the stroke and writes `data/field_logs/<timestamp>_<name>.csv` (motor position, velocity, load,
+voltage, temperature; IMU Euler, quaternion, acceleration, gyro) plus a summary PNG. Stop at 60 °C motor
+temperature or below 10 V battery.
+
+Before a session, `python3 field_test/hardware_check.py` on the Pi scans the I²C bus, calibrates the IMU,
+and moves the motor once while reading the battery.
+
+## 2. On the laptop: one folder per run, then four steps
+
+Put the Pi's CSV, the phone video and the phone's sensor folder (its IMU CSVs and the sync frames) into
+`data/<session>/run_<NN>_<f>Hz_<amp>mm/raw/`, then:
+
 ```bash
-python3 field_test/unified_test.py --imu-mode 9dof --p 1000 --d 50 --name "stiff_tail_test"
+python field_test/pipeline/01_sync_and_convert.py     # phone clock → Unix time; finds the sync frame in the video; writes processed/01_*
+python field_test/pipeline/02_process_swimming.py     # AprilTag pose per frame, gravity-aligned; writes 02_clean_path.csv, 02_fish_log_trimmed.csv, a quality report
+python field_test/pipeline/03_prep_field2sim.py       # resamples pose, motor and gyro onto one clock; writes 03_field2sim_ready.csv
+python field_test/pipeline/04_plot_field_test.py      # trajectory, speed, motor tracking and yaw plots per run
 ```
 
-## 📦 Installation (Raspberry Pi 5)
+Steps 01, 02 and 04 walk every `data/<session>/run_*/raw/`; 02 and 03 also take one run folder as an
+argument. `03_field2sim_ready.csv` is the file fishsim fits on (`--radius 17.5`, `--yaw_source imu` are
+the defaults the twelve runs used). Per-run detection settings and manual outlier corrections live in
+`vision_settings.json`, found with `pipeline/vision_tuner.py --video <video>`.
 
-Install the required system packages and Python libraries:
-```bash
-sudo apt update
-sudo apt install python3-numpy python3-matplotlib python3-pip
-sudo pip3 install adafruit-circuitpython-bno055 dynamixel-sdk --break-system-packages
+**The phone clock.** The phone stamps frames and IMU samples in nanoseconds since boot. `BOOT_OFFSET` in
+`01_sync_and_convert.py` is the Unix time of that boot (62 ADB snapshots over 24 h, std 7 ms, drift
+1 ms per day, i.e. well inside one frame). It is a constant until the phone reboots or its clock is
+changed; then re-measure it with
+
+```powershell
+.\adb.exe shell "date +%s.%N; cat /proc/uptime"      # offset = Unix time − uptime, averaged over a few snapshots
 ```
 
-## 🛠 Command Line Arguments
+## 3. Camera calibration
 
-| Argument | Default | Description |
-| :--- | :--- | :--- |
-| `--name` | `test_run` | Label for the experiment (used in filenames) |
-| `--freq` | `1.0` | Swimming frequency in Hz |
-| `--amp` | `5.0` | Peak-to-peak tendon travel in mm |
-| `--offset` | `0.0` | Tendon length offset in mm |
-| `--duration`| `10.0` | Run time in seconds |
-| `--p, --i, --d`| `800, 0, 0` | Dynamixel XL430 PID gains |
-| `--imu-mode` | `6dof` | `6dof` (Mag OFF) or `9dof` (Mag ON) |
-| `--rate` | `50` | Logging frequency in Hz |
-| `--skip-calib`| `False` | Skip the 60s IMU calibration wait |
+```bash
+python field_test/pipeline/generate_pattern.py --diag 27 --res_w 2560 --res_h 1440    # a ChArUco board sized for a given screen
+python field_test/pipeline/calibrate_camera.py --video <board video> --checker_size <mm> --marker_size <mm>
+python field_test/pipeline/verify_calibration.py --video <video> --camera <name>        # reprojection check against vision_settings.json
+```
 
-## 📊 Output & Data
-- **Logs:** Saved as CSV in `field_test/data/`. Includes timestamps, motor state (Pos, Vel, Load, Volt, Temp), and full IMU fusion data (Euler, Quaternions, Accel, Gyro, Mag).
-- **Plots:** A summary PNG is generated in `field_test/plots/` after every run, showing motor tracking accuracy, orientation, and system health (Voltage/Temp).
-
-## ⚠️ Safety Notes
-- **Motor Temp:** Monitor the temperature in the summary plots. If it exceeds **60°C**, stop the tests and let the motor cool.
-- **Battery:** If voltage drops below **10.0V** (for a 3S LiPo), recharge immediately to avoid damage.
-- **IMU Mode:** Use `6dof` if you notice the heading (Yaw) drifting wildly near the motor. Use `9dof` only if you have calibrated the magnetometer in the field.
+The pattern is shown on a screen and filmed from many angles; the calibration writes the camera entry into
+`vision_settings.json`. The 276 frames behind the phone's calibration are in the archive
+(`03_sysid/camera_calibration/`).

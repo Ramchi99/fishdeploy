@@ -48,7 +48,7 @@ def find_best_files(base_dir, dist, freq, env):
 
 def generate_combined_summary(dist, frequencies):
     base_dir = str(TAIL_BENCH)   # air/ and water/ subfolders; water/ lives in the archive only
-    plot_dir = "sysid/tail/plots/comparison_air_water/"
+    plot_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "plots", "comparison_air_water")
     os.makedirs(plot_dir, exist_ok=True)
     
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
