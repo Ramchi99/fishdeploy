@@ -31,10 +31,37 @@ def fat_star(inner=0.50, n=5):
 
 STAR = fat_star()
 
-import sys as _sys
-_sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from report_style import use_report_style, savefig, COLLAGE_LW
-use_report_style(collage=True)
+# The collage look (the report's "collage" tier, kept here so fishsim's Fig. 7 draws the same panels):
+# roomy canvas scaled down by LaTeX, serif via usetex (REPORT_USETEX=0 for a STIX fallback), framed axes
+# with a light grid (REPORT_VARIANT=airy removes the frame), Okabe-Ito colours.
+COLLAGE_LW = 2.4                  # collage data lines (on-page ~1.1 after LaTeX scaling)
+_CB_CYCLE = ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#56B4E9", "#E69F00"]
+_FRAMED = os.environ.get("REPORT_VARIANT", "framed") != "airy"
+_rc = {
+    "figure.dpi": 130, "savefig.dpi": 300, "savefig.bbox": "tight", "savefig.pad_inches": 0.02,
+    "font.size": 11.0, "axes.titlesize": 11.0, "axes.labelsize": 11.0,
+    "xtick.labelsize": 10.5, "ytick.labelsize": 10.5, "legend.fontsize": 10.5,
+    "lines.linewidth": 1.1, "lines.markersize": 4.5,
+    "axes.linewidth": 1.3, "xtick.major.width": 1.2, "ytick.major.width": 1.2,
+    "xtick.major.size": 5.0, "ytick.major.size": 5.0, "xtick.direction": "out", "ytick.direction": "out",
+    "axes.spines.top": _FRAMED, "axes.spines.right": _FRAMED,
+    "axes.grid": _FRAMED, "grid.linewidth": 0.5, "grid.alpha": 0.30,
+    "legend.frameon": False, "axes.axisbelow": True,
+    "axes.prop_cycle": matplotlib.cycler(color=_CB_CYCLE),
+    "axes.titleweight": "medium", "axes.labelweight": "medium",
+}
+if os.environ.get("REPORT_USETEX", "1") != "0":
+    _rc.update({"text.usetex": True, "font.family": "serif", "text.latex.preamble": r"\usepackage{lmodern}"})
+else:
+    _rc.update({"text.usetex": False, "font.family": "STIXGeneral", "mathtext.fontset": "stix"})
+matplotlib.rcParams.update(_rc)
+
+
+def savefig(fig, stem):
+    """stem.pdf + stem.png ('_airy' appended for the airy variant); returns the pdf path."""
+    s = stem + ("" if _FRAMED else "_airy")
+    fig.savefig(s + ".pdf"); fig.savefig(s + ".png"); plt.close(fig)
+    return s + ".pdf"
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 import sys as _sys; _sys.path.insert(0, os.path.abspath(os.path.join(_HERE, "..")))   # repository root
@@ -192,9 +219,7 @@ def panel(ax, run, title, truncate, moving, scale):
     ax.xaxis.set_minor_formatter(FormatStrFormatter("%g"))
     ax.yaxis.set_minor_formatter(FormatStrFormatter("%g"))
     ax.tick_params(axis="both", which="minor", labelsize=plt.rcParams["xtick.labelsize"])  # minor == major, always
-    import os as _os
-    _fr = _os.environ.get("REPORT_VARIANT", "framed") != "airy"
-    ax.spines["top"].set_visible(_fr); ax.spines["right"].set_visible(_fr)
+    ax.spines["top"].set_visible(_FRAMED); ax.spines["right"].set_visible(_FRAMED)
 
     note = (f"figure-eight, {t_span:.0f} s" if moving
             else f"{start_dist:.2f} m $\\rightarrow$ {end_dist:.3f} m, {t_span:.0f} s")

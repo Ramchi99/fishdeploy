@@ -120,7 +120,7 @@ moving-target and figure-eight targets), each with `raw/run.csv` (50 Hz: observa
 python analysis/build_analysis.py      # re-detect the tags in each video, cache the tracks, render trace videos
 python analysis/build_reach.py         # reach outcomes, target geometry, reachability plots
 python analysis/build_catalog.py       # RUN_CATALOG.md
-python analysis/gen_report_strobes.py  # the strobe composites of paper Fig. 1 and Fig. 7
+python analysis/gen_strobes.py         # the six strobe composites of paper Fig. 1 and Fig. 7
 ```
 
 Needs the videos from the archive next to the CSVs. The outputs that the paper figures read (`cache/`,

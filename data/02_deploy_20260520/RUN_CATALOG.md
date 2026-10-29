@@ -26,7 +26,7 @@ Legend: drops = recorder dropped frames (timing recovered, see the troubleshooti
 | finetune_run_1 | ✅ success | 2.79 | -83 | 0.023 | — | 7% |  |
 | finetune_run_2 | ❌ fail | 3.15 | +66 | 1.461 | — | 5% | target moved by hand at the end |
 | finetune_run_3 | ❌ fail | 2.59 | +103 | 2.583 | — | ⚠️26% |  |
-| finetune_run_4 | ✅ success | 2.14 | -83 | 0.246 | 2251 (50%) | 3% | heavy frame drops (~50%) |
+| finetune_run_4 | ❌ fail | 2.14 | -83 | 0.246 | 2251 (50%) | 3% | closest approach 246 mm, heavy frame drops (~50%) |
 | finetune_run_5 | ✅ success | 2.82 | -49 | 0.064 | — | ⚠️11% |  |
 | finetune_run_6 | ✅ success | 1.49 | -175 | 0.016 | 115 (6%) | 3% | target out-of-distribution (behind) |
 | finetune_run_7 | ✅ success | 1.73 | +158 | 0.021 | — | 7% | target out-of-distribution (behind) |

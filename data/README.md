@@ -26,7 +26,7 @@ and validated on 01, 02, 05, 06, 08, 12 (run 02 was nudged by hand).
 In the archive only: `raw/VID_*.mp4` (phone video), `raw/<timestamp>/` (phone IMU, sync frames), the other
 pipeline outputs and plots.
 
-## 02_deploy_20260520: the closed-loop deployment runs (135 MB)
+## 02_deploy_20260520: the closed-loop deployment runs (120 MB)
 
 Pool, 2026-05-20, the deployed policy driving the fish. 43 runs are the paper's deployment set (rows 1 to 43
 of the appendix run table, in recording order; `RUN_CATALOG.md` lists them with outcome, target geometry and
@@ -40,14 +40,14 @@ the closed-loop fits use segments of them.
 | `<run>/raw/run_config.json`, `frame_timestamps.csv` | env config, policy hash (`7bbe08b8` in all), clock offset; camera frame times | `deploy_main.py`, `deploy/laptop/vision_streamer.py` | `analysis/build_analysis.py`, the fits |
 | `analysis/cache/<name>.npz`, `cache_redetect/<name>.npz` | tracked fish, anchor and target positions per frame, corrected timeline | `analysis/build_analysis.py`, `redetect_trajectories.py` (from the videos) | paper Fig. 7, Fig. 8 |
 | `analysis/cache_heading/initial_heading.json` | initial heading per reach run | `analysis/make_heading_cache.py` (from the videos in the archive) | paper Fig. 8 |
-| `analysis/reachability/run_geometry.csv`, `reachability_summary.md` | target radius, angle, outcome, closest approach; the 13/22, 7/8, 20/30 counts | `analysis/build_reach.py` | paper Fig. 8, the report |
-| `analysis/report_strobes/*.png` | strobe composites | `analysis/gen_report_strobes.py` (from the videos) | paper Fig. 1, Fig. 7 |
-| `canonical/<part_id>.csv` | 18 curated segments resampled to 1 kHz: pose, yaw, velocities, motor position and velocity, gyro | `analysis/canonical/convert_segments.py` (from the videos and `run.csv`, following `layer2_parts.yml`) | fishsim `sysid/closed_loop/refit_fluid.py` (the direct-action fluid), `fit_motor.py` (Table "motor") |
+| `analysis/reachability/run_geometry.csv`, `reachability_summary.md` | target radius, angle, outcome, closest approach; the 13/22, 7/8, 20/30 counts | `analysis/build_reach.py` (outcomes from the run list in `build_analysis.py`) | paper Fig. 8, the report |
+| `analysis/report_strobes/*_traceover_strobe.png` | the six strobe composites | `analysis/gen_strobes.py` (from the videos) | paper Fig. 1, Fig. 7 |
+| `canonical/<num>_<name>__p<part>.csv` | 18 curated segments resampled to 1 kHz: pose, yaw, velocities, motor position and velocity, gyro; the name is the manifest's run name reduced to letters, digits and underscores | `analysis/canonical/convert_segments.py` (from the videos and `run.csv`, following `layer2_parts.yml`) | fishsim `sysid/closed_loop/refit_fluid.py` (the direct-action fluid), `fit_motor.py` (Table "motor") |
 | `canonical/layer2_parts.yml`, `layer1_runs.yml` | the curation manifest: which runs, which [t_start, t_end] parts, starts-at-rest flags | hand-curated in the private fluidID workspace | `convert_segments.py`, both fits |
 | `canonical/motor_zeros.json`, `motor_zero.json`, `anchor_calibration.json`, `detection/*.json` | motor-zero corrections, the session anchor, per-run AprilTag detection parameters | the fluidID workspace | `convert_segments.py`, the motor fit |
 
 In the archive only: `<run>/raw/video.avi`, `<run>/processed/*.png`, `analysis/videos/`, `strobe_plots/`,
-`tag_pipeline_frames/`, the reachability plots.
+`tag_pipeline_frames/`, the reachability plots, the fish-over strobe variants and the strobe montage.
 
 ## 03_sysid: the bench measurements (4 MB)
 
@@ -64,6 +64,6 @@ reads them), the 17 benchmark videos, the 18 MB 6-DOF IMU log, the 276 camera-ca
 ## Notes
 
 - The Pi and laptop CSVs are CRLF; `.gitattributes` disables line-ending normalisation so they stay byte-identical.
-- `finetune_run_4` (`194717`) is a fail (closest approach 246 mm, heavy frame drops); the 20/30 reach count assumes that.
+- `finetune_run_4` (`194717`) is a fail (closest approach 246 mm, heavy frame drops); the tables and the 20/30 count carry that.
 - The file name recorded in each `run_config.json` (`SAC_curriculum_stage0_fwd_wide.zip`) is the name the
   checkpoint had on the Pi that day; its hash `7bbe08b8` is `policies/sofi_cpg_rl_policy.zip`.

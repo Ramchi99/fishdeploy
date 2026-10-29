@@ -10,7 +10,6 @@ insane_run_1,disturbance,fail,1.746,71.8,1.740,16.1,initial backward velocity
 finetune_run_6,static,success,1.488,-175.2,0.016,3.5,target out-of-distribution (behind)
 full_success_3,static,success,1.708,-83.9,0.017,4.0,has frame drops
 finetune_run_1,static,success,2.789,-83.3,0.023,7.0,
-finetune_run_4,static,success,2.139,-83.3,0.246,2.9,heavy frame drops (~50%)
 crazy_run_4,static,success,2.120,-65.2,0.017,17.2,
 finetune_run_5,static,success,2.824,-48.6,0.064,11.0,
 hope_didnt_work_2,static,success,1.613,-32.6,0.045,9.4,FIRST EVER successful RL run
@@ -22,6 +21,7 @@ crazy_run_5,static,success,1.961,50.7,0.026,15.2,
 full_success_2,static,success,1.794,72.3,0.023,6.2,
 finetune_run_7,static,success,1.734,157.9,0.021,7.3,target out-of-distribution (behind)
 finetune_run_9,static,fail,0.955,-109.9,0.725,0.0,heavy frame drops (~48%)
+finetune_run_4,static,fail,2.139,-83.3,0.246,2.9,"closest approach 246 mm, heavy frame drops (~50%)"
 hope_didnt_work_3,static,fail,1.755,57.0,1.410,21.8,
 crazy_run_1,static,fail,1.715,59.3,0.685,21.4,
 crazy_run_3,static,fail,1.718,63.0,0.860,21.8,

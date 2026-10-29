@@ -13,6 +13,7 @@ Layer 2 — fine parts (trajectory-validated windows, one or more per run):
             part, t_start, t_end, starts_at_rest.
 """
 from __future__ import annotations
+import re
 
 import os
 from typing import Any
@@ -30,14 +31,20 @@ LAYER1_FLAGS = ("reached_target", "good_for_fluidid", "highlight", "has_error")
 # ---------------------------------------------------------------------------
 
 
+def slug(name: str) -> str:
+    """File-name form of a hand-written run name: ASCII letters, digits and underscores only
+    ('Weird Run 180° Turn' -> 'Weird_Run_180_Turn'). The manifests keep the human names."""
+    return re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
+
+
 def run_slug(num: int, name: str) -> str:
-    """Return a zero-padded run identifier string, e.g. '001_two_stroke_glide'."""
-    return f"{num:03d}_{name}"
+    """Return a zero-padded run identifier string, e.g. '001_Glide'."""
+    return f"{num:03d}_{slug(name)}"
 
 
 def part_id(num: int, name: str, part: int) -> str:
-    """Return a unique part identifier string, e.g. '001_two_stroke_glide__p1'."""
-    return f"{num:03d}_{name}__p{part}"
+    """Return a unique part identifier string, e.g. '001_Glide__p1'."""
+    return f"{num:03d}_{slug(name)}__p{part}"
 
 
 # ---------------------------------------------------------------------------

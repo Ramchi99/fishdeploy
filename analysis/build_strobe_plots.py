@@ -84,26 +84,17 @@ def segment_fish(frame, cx, cy, r, scale):
     fb = max(3, int(7 * scale)) | 1
     return cv2.GaussianBlur(full, (fb, fb), 0)
 
+# The six strobe composites of paper Fig. 1 and Fig. 7 (gen_strobes.py renders them into report_strobes/).
+# base_run: the run folder (by its given name); min_dist_px: how close the fish must come to the target for the
+# strobe to stop; stop_at_min: stop at the closest approach; bg_frame_idx: the background frame; keep_9th /
+# clean_stick: the figure-eight's ninth ghost and the stick removal; match_bg: brightness-match the crops.
 CONFIG = {
-    "hope_didnt_work_2": {"base_run": "hope_didnt_work_2", "min_dist_px": 220, "stop_at_min": True},
-    "insane_run_8": {"base_run": "insane_run_8", "min_dist_px": 300, "stop_at_min": True},
-    "insane_run_8_middle_bg": {"base_run": "insane_run_8", "min_dist_px": 300, "stop_at_min": True, "bg_frame_idx": 502},
-    "finetune_run_6": {"base_run": "finetune_run_6", "min_dist_px": 250, "stop_at_min": True},
-    "figure_eight_6": {"base_run": "figure_eight_6", "min_dist_px": 280, "stop_at_min": False},
-    "figure_eight_6_with_9": {"base_run": "figure_eight_6", "min_dist_px": 280, "stop_at_min": False, "keep_9th": True},
-    "figure_eight_6_clean": {"base_run": "figure_eight_6", "min_dist_px": 280, "stop_at_min": False, "keep_9th": True, "clean_stick": True},
-    
-    # HIGHRES VARIANTS
-    "hope_didnt_work_2_highres": {"base_run": "hope_didnt_work_2", "min_dist_px": 220, "stop_at_min": True, "highres": True},
-    "insane_run_8_highres": {"base_run": "insane_run_8", "min_dist_px": 300, "stop_at_min": True, "highres": True},
+    "hope_didnt_work_2_highres":      {"base_run": "hope_didnt_work_2", "min_dist_px": 220, "stop_at_min": True, "highres": True},
     "insane_run_8_middle_bg_highres": {"base_run": "insane_run_8", "min_dist_px": 300, "stop_at_min": True, "bg_frame_idx": 502, "highres": True},
-    "finetune_run_6_highres": {"base_run": "finetune_run_6", "min_dist_px": 250, "stop_at_min": True, "highres": True},
-    "figure_eight_6_clean_highres": {"base_run": "figure_eight_6", "min_dist_px": 280, "stop_at_min": False, "keep_9th": True, "clean_stick": True, "highres": True},
-
-    # Report §5.2 gallery additions (2026-07-09): (c) backward-velocity success, (e) OOD failure.
-    "insane_run_2_highres": {"base_run": "insane_run_2", "min_dist_px": 240, "stop_at_min": True, "highres": True},
-    "finetune_run_8_highres": {"base_run": "finetune_run_8", "min_dist_px": 250, "stop_at_min": False, "highres": True},
-    "finetune_run_7_highres": {"base_run": "finetune_run_7", "min_dist_px": 250, "stop_at_min": True, "highres": True, "match_bg": True},
+    "insane_run_2_highres":           {"base_run": "insane_run_2", "min_dist_px": 240, "stop_at_min": True, "highres": True},
+    "finetune_run_7_highres":         {"base_run": "finetune_run_7", "min_dist_px": 250, "stop_at_min": True, "highres": True, "match_bg": True},
+    "finetune_run_8_highres":         {"base_run": "finetune_run_8", "min_dist_px": 250, "stop_at_min": False, "highres": True},
+    "figure_eight_6_clean_highres":   {"base_run": "figure_eight_6", "min_dist_px": 280, "stop_at_min": False, "keep_9th": True, "clean_stick": True, "highres": True},
 }
 
 def compute_median_background(cap, total, out_w, out_h):

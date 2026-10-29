@@ -104,7 +104,7 @@ MANIFEST = [
     R("20260520_193345_finetune_run_1",    "finetune_run_1",    "static", "success"),
     R("20260520_193531_finetune_run_2",    "finetune_run_2",    "static", "fail", "target moved by hand at the end"),
     R("20260520_194106_finetune_run_3",    "finetune_run_3",    "static", "fail"),
-    R("20260520_194717_finetune_run_4",    "finetune_run_4",    "static", "success", "heavy frame drops (~50%)"),
+    R("20260520_194717_finetune_run_4",    "finetune_run_4",    "static", "fail",    "closest approach 246 mm, heavy frame drops (~50%)"),
     R("20260520_195021_finetune_run_5",    "finetune_run_5",    "static", "success"),
     R("20260520_195142_finetune_run_6",    "finetune_run_6",    "static", "success", "target out-of-distribution (behind)"),
     R("20260520_195359_finetune_run_7",    "finetune_run_7",    "static", "success", "target out-of-distribution (behind)"),
