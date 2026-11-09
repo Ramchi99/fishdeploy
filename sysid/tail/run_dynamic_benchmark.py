@@ -124,7 +124,8 @@ try:
             time.sleep(1) # Let it settle
             
             if step > 0:
-                filename = os.path.join(save_dir, f"{timestamp}_{args.dataset}_Benchmark_{args.env}_{freq}Hz_{frac*100}Amp.csv")
+                # <date>_<dataset>_d<travel>_Benchmark_<env>_<f>Hz_<amp>Amp.csv, the naming of the March 2026 sweeps
+                filename = os.path.join(save_dir, f"{timestamp}_{args.dataset}_d{args.max_tendon_travel:04.1f}_Benchmark_{args.env}_{freq}Hz_{frac*100}Amp.csv")
                 with open(filename, mode='w', newline='') as file:
                     writer = csv.writer(file)
                     writer.writerow(['Env', 'Dataset', 'PulleyRadius_mm', 'Freq', 'AmpFrac', 'CmdAmpTravel_mm', 'CmdAmpTicks'])

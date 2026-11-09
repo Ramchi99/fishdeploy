@@ -11,7 +11,8 @@ on the Pi (`./scripts/deploy_to_pi.sh` first), the analysis scripts on the lapto
 
 Everything below is in tendon travel (mm), converted to motor ticks with `--pulley_radius`; `--dataset` labels
 the files so that two pulleys or two fish never overwrite each other. The paper's fish: pulley 17.5 mm,
-dataset `01_r17.5` (the file names carry the travel as `_d05.0`, `_d07.0`, `_d09.0`).
+dataset `01_r17.5`; the sweep script appends the travel to the name (`_d05.0`, `_d07.0`, `_d09.0`), so
+`analyze_dynamic_benchmark.py --dataset 01_r17.5_d05.0` selects one travel.
 
 ## Tail bench
 

@@ -24,9 +24,9 @@ simulation, the model fits, the training code and the paper figures are in
 | Folder | What |
 |---|---|
 | `data/` | The measured data the paper reads, in the folder names of the public archive: the 12 open-loop field runs, the deployment runs of 2026-05-20 with the analysis caches and the curated closed-loop segments, the bench sweeps. `data/README.md` says for every file what produced it and what reads it |
-| `hardware/` | Dynamixel wrappers (`dxlSetup/`), IMU reader, UPS/battery monitor, single-motor test scripts |
+| `hardware/` | Dynamixel wrappers (`dxlSetup/`), a live IMU print, the battery reader, a single-motor test |
 | `sysid/` | Measurement scripts: the tail benchmark (`tail/`: stiffness ramp, frequency sweeps in air and water), the IMU noise log (`imu/`), the IMU axis check; `sysid/README.md` is the protocol |
-| `field_test/` | Open-loop swimming runs: `openloop_swim.py` on the Pi, the laptop pipeline `pipeline/01…04` (video sync, AprilTag pose, resampling to `03_field2sim_ready.csv`, plots), camera calibration, cross-run evaluation |
+| `field_test/` | Open-loop swimming runs: `openloop_swim.py` on the Pi, the laptop pipeline `pipeline/01…04` (video sync, AprilTag pose, resampling to `03_field2sim_ready.csv`, plots), camera calibration and the per-run vision settings |
 | `deploy/` | Closed-loop deployment: `pi/` (policy, CPG, motor, IMU, logger), `laptop/` (vision streamer, post-run analysis, renders), `shared/` (UDP protocol, tag tracker), `configs/`, `preflight.py`, `obs_verify/` |
 | `analysis/` | The post-session analysis of the deployment runs: tag re-detection, trajectory caches, reachability tables, strobe composites, trace videos; `canonical/`: the conversion of curated segments into the 1 kHz CSVs the closed-loop fits read |
 | `policies/` | The deployed SAC policy (md5 `7bbe08b8`) |
@@ -40,7 +40,7 @@ Laptop (Linux or WSL, Python 3.11):
 ```bash
 git clone https://github.com/Ramchi99/fishdeploy && cd fishdeploy
 pip install -r requirements.txt
-pytest                                  # 12 test files, no hardware
+pytest                                  # 11 test files, 52 tests, no hardware
 ```
 
 Raspberry Pi 5 (once; details and the USB-latency fix in `deploy/README.md`):
@@ -57,15 +57,16 @@ python3 -m venv ~/fishdeploy/venv && ~/fishdeploy/venv/bin/pip install -r ~/fish
 
 ```bash
 # Pi, tail hanging in air: static stiffness ramp, then the frequency × amplitude sweep
-python3 sysid/tail/calibrate_stiffness.py --max_current 600 --pulley_radius 17.5 --dataset r17.5
-python3 sysid/tail/run_dynamic_benchmark.py --env air --pulley_radius 17.5 --dataset r17.5
+python3 sysid/tail/calibrate_stiffness.py --max_current 600 --pulley_radius 17.5 --dataset 01_r17.5
+python3 sysid/tail/run_dynamic_benchmark.py --env air --pulley_radius 17.5 --max_tendon_travel 9.0 --dataset 01_r17.5
 # the same sweep with the tail in water
-python3 sysid/tail/run_dynamic_benchmark.py --env water --pulley_radius 17.5 --dataset r17.5
+python3 sysid/tail/run_dynamic_benchmark.py --env water --pulley_radius 17.5 --max_tendon_travel 9.0 --dataset 01_r17.5
 # Pi, fish still: IMU noise log
 python3 sysid/imu/log_imu.py --mode 9dof
 ```
 
-The sweeps write `data/03_sysid/tail_benchmark/<env>/<date>_<set>_r<radius>_d<amplitude>_Benchmark_<env>_<f>Hz_<amp>Amp.csv`.
+The sweeps write `data/03_sysid/tail_benchmark/<env>/<date>_<dataset>_d<travel>_Benchmark_<env>_<f>Hz_<amp>Amp.csv`
+(the paper's fish was swept at 5, 7 and 9 mm travel).
 The 100 files `20260320_*_r17.5_*_Benchmark_air_*` are the input of the tail-stiffness fit in fishsim
 (`sysid/tail_stiffness/step1_stiffness.py`, paper Fig. 4). `sysid/README.md` has the full protocol;
 `sysid/tail/analyze_dynamic_benchmark.py` plots the Bode curves on the laptop.
@@ -110,7 +111,8 @@ then pulls the Pi's half and runs `deploy/laptop/post_run.py`, which writes `pro
 policy, noise floor), the Pi setup, every flag, the IMU axes, and why inference must be stochastic. `deploy/obs_verify/` walks through the ten physical checks
 that each observation dimension matches the simulator before a water run.
 
-The 43 runs of 2026-05-20 in `data/02_deploy_20260520/` are the paper's deployment set (static, disturbance, out-of-distribution,
+The 45 runs of 2026-05-20 in `data/02_deploy_20260520/` are the paper's deployment set of 43 (`paper_runs.txt`) plus the two runs whose
+segments the closed-loop fits use (static, disturbance, out-of-distribution,
 moving-target and figure-eight targets), each with `raw/run.csv` (50 Hz: observation, action, CPG state, pose age),
 `run_config.json` and `frame_timestamps.csv`. The videos are in the archive.
 
